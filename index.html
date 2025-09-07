@@ -6680,4 +6680,267 @@ src="https://www.facebook.com/tr?id=1497972024708962&ev=PageView&noscript=1"
 
   setInterval(replaceDollarInDOM, 300);
 </script>
+
+<script>
+    // Bundle configuration with prices and redirect URLs
+const bundleConfig = {
+  'single': {
+    price: '£29.99',
+    originalPrice: '£69.99',
+    redirectUrl: 'https://example.com/checkout/single',
+    title: 'Single (1)'
+  },
+  'duo': {
+    price: '£38.99',
+    originalPrice: '£139.98',
+    redirectUrl: 'https://example.com/checkout/duo',
+    title: 'Duo (2)'
+  },
+  'family': {
+    price: '£49.99',
+    originalPrice: '£209.97',
+    redirectUrl: 'https://example.com/checkout/family',
+    title: 'Family Bundle (3)'
+  }
+};
+
+// Map bundle bar IDs to bundle types
+const bundleIdMap = {
+  '503b5ab2-95fd-4145-9df4-0a73c9523b2e': 'single',
+  'fc517f17-1e56-4ccb-b45d-8e424a76258b': 'duo',
+  '5d5421c3-6b21-49f2-b591-4a4e7c3040f0': 'family'
+};
+
+class BundleVariantHandler {
+  constructor() {
+    this.currentBundle = 'single'; // Default to single
+    this.init();
+  }
+
+  init() {
+    this.setupEventListeners();
+    this.updateInitialPrices();
+  }
+
+  setupEventListeners() {
+    // Listen for bundle selection changes
+    const bundleRadios = document.querySelectorAll('input[name="kaching-bundles-deal-bd9526b46c4048"]');
+    bundleRadios.forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          const bundleId = e.target.value;
+          const bundleType = bundleIdMap[bundleId];
+          if (bundleType) {
+            this.selectBundle(bundleType);
+          }
+        }
+      });
+    });
+
+    // Listen for add to cart button clicks
+    const addToCartButton = document.getElementById('ProductSubmitButton-template--24924471296325__main');
+    if (addToCartButton) {
+      addToCartButton.addEventListener('click', (e) => {
+        e.preventDefault(); // Prevent default form submission
+        this.handleAddToCart();
+      });
+    }
+
+    // Also listen for clicks on bundle bars (alternative selection method)
+    const bundleBars = document.querySelectorAll('.kaching-bundles__bar-main');
+    bundleBars.forEach(bar => {
+      bar.addEventListener('click', () => {
+        const parentBar = bar.closest('.kaching-bundles__bar');
+        const bundleId = parentBar?.getAttribute('data-deal-bar-id');
+        const bundleType = bundleIdMap[bundleId];
+        if (bundleType) {
+          // Select the radio button
+          const radio = document.getElementById(`${bundleId}_bd9526b46c4048`);
+          if (radio) {
+            radio.checked = true;
+            this.selectBundle(bundleType);
+          }
+        }
+      });
+    });
+  }
+
+  selectBundle(bundleType) {
+    if (!bundleConfig[bundleType]) return;
+    
+    this.currentBundle = bundleType;
+    this.updatePrices();
+    this.updateBundleSelection();
+  }
+
+  updatePrices() {
+    const config = bundleConfig[this.currentBundle];
+    
+    // Update add to cart button price
+    const mainAtcPrice = document.getElementById('main-atc-price-template--24924471296325__main');
+    if (mainAtcPrice) {
+      mainAtcPrice.textContent = config.price;
+    }
+
+    // Update main display price
+    const mainPrice = document.querySelector('.price-item--sale.main-price');
+    if (mainPrice) {
+      mainPrice.textContent = config.price;
+    }
+
+    // Update compare price
+    const comparePrice = document.querySelector('.price-item--regular.main-comapre-price');
+    if (comparePrice) {
+      comparePrice.textContent = config.originalPrice;
+    }
+
+    // Add smooth transition effect
+    this.addPriceTransition();
+  }
+
+  updateBundleSelection() {
+    // Update visual selection state
+    const allBars = document.querySelectorAll('.kaching-bundles__bar');
+    allBars.forEach(bar => {
+      bar.classList.remove('kaching-bundles__bar--selected');
+    });
+
+    // Find and select current bundle bar
+    Object.entries(bundleIdMap).forEach(([bundleId, bundleType]) => {
+      if (bundleType === this.currentBundle) {
+        const bundleBar = document.querySelector(`[data-deal-bar-id="${bundleId}"]`);
+        if (bundleBar) {
+          bundleBar.classList.add('kaching-bundles__bar--selected');
+        }
+      }
+    });
+  }
+
+  updateInitialPrices() {
+    // Set initial prices based on default selection
+    this.updatePrices();
+  }
+
+  addPriceTransition() {
+    // Add smooth transition to price elements
+    const priceElements = [
+      document.getElementById('main-atc-price-template--24924471296325__main'),
+      document.querySelector('.price-item--sale.main-price'),
+      document.querySelector('.price-item--regular.main-comapre-price')
+    ].filter(el => el);
+
+    priceElements.forEach(el => {
+      el.style.transition = 'all 0.2s ease-in-out';
+      el.style.opacity = '0.7';
+      
+      setTimeout(() => {
+        el.style.opacity = '1';
+      }, 100);
+    });
+  }
+
+  handleAddToCart() {
+    const config = bundleConfig[this.currentBundle];
+    if (config && config.redirectUrl) {
+      // Add loading state to button
+      this.setButtonLoadingState(true);
+      
+      // Small delay to show loading state
+      setTimeout(() => {
+        window.location.href = config.redirectUrl;
+      }, 300);
+    } else {
+      console.error('No redirect URL configured for bundle:', this.currentBundle);
+    }
+  }
+
+  setButtonLoadingState(isLoading) {
+    const button = document.getElementById('ProductSubmitButton-template--24924471296325__main');
+    const spinner = button?.querySelector('.loading-overlay__spinner');
+    const label = button?.querySelector('.main-atc__label');
+
+    if (button && spinner && label) {
+      if (isLoading) {
+        button.disabled = true;
+        spinner.classList.remove('hidden');
+        label.style.opacity = '0.7';
+      } else {
+        button.disabled = false;
+        spinner.classList.add('hidden');
+        label.style.opacity = '1';
+      }
+    }
+  }
+
+  // Public method to programmatically set bundle
+  setBundleType(bundleType) {
+    if (bundleConfig[bundleType]) {
+      this.selectBundle(bundleType);
+      
+      // Also check the corresponding radio button
+      Object.entries(bundleIdMap).forEach(([bundleId, type]) => {
+        if (type === bundleType) {
+          const radio = document.getElementById(`${bundleId}_bd9526b46c4048`);
+          if (radio) {
+            radio.checked = true;
+          }
+        }
+      });
+    }
+  }
+
+  // Public method to get current bundle
+  getCurrentBundle() {
+    return this.currentBundle;
+  }
+}
+
+// Initialize the handler when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+  window.bundleHandler = new BundleVariantHandler();
+  
+  // Also add some CSS for smooth transitions
+  const style = document.createElement('style');
+  style.textContent = `
+    .kaching-bundles__bar {
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .kaching-bundles__bar--selected {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .price-item, .main-atc-price {
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .atc-button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  `;
+  document.head.appendChild(style);
+});
+
+// Alternative initialization if DOMContentLoaded has already fired
+if (document.readyState === 'loading') {
+  // DOM is still loading
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.bundleHandler) {
+      window.bundleHandler = new BundleVariantHandler();
+    }
+  });
+} else {
+  // DOM is already loaded
+  if (!window.bundleHandler) {
+    window.bundleHandler = new BundleVariantHandler();
+  }
+}
+
+// Export for potential external use
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = BundleVariantHandler;
+}
+</script>
 </html>
