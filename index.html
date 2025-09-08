@@ -5508,7 +5508,7 @@ src="https://www.facebook.com/tr?id=1497972024708962&ev=PageView&noscript=1"
   .kaching-bundles__bar-full-price{
     visibility: hidden;
   }
-  .price-item.price-item--sale.price-item--last.main-price, .price-item--regular.main-comapre-price{
+  .price-item.price-item--sale.price-item--last.main-price, .price-item--regular.main-comapre-price, .slider-button.slider-button--prev, .slider-button.slider-button--next{
     visibility: hidden;
   }
   
@@ -6690,2426 +6690,12 @@ src="https://www.facebook.com/tr?id=1497972024708962&ev=PageView&noscript=1"
   setInterval(replaceDollarInDOM, 300);
 </script>
 
-<!-- <script>
-  // Bundle variants configuration with all possible color combinations
-const BUNDLE_CONFIG = {
-  'single': {
-    price: 29.99,
-    originalPrice: 69.99,
-    savings: 40.00,
-    urls: {
-      'black': '/checkout/single-black',
-      'white': '/checkout/single-white'
-    }
-  },
-  'duo': {
-    price: 38.99,
-    originalPrice: 139.98,
-    savings: 100.99,
-    urls: {
-      'black-black': '/checkout/duo-black-black',
-      'black-white': '/checkout/duo-black-white',
-      'white-black': '/checkout/duo-white-black',
-      'white-white': '/checkout/duo-white-white'
-    }
-  },
-  'family': {
-    price: 49.99,
-    originalPrice: 209.97,
-    savings: 159.98,
-    urls: {
-      'black-black-black': '/checkout/family-black-black-black',
-      'black-black-white': '/checkout/family-black-black-white',
-      'black-white-black': '/checkout/family-black-white-black',
-      'black-white-white': '/checkout/family-black-white-white',
-      'white-black-black': '/checkout/family-white-black-black',
-      'white-black-white': '/checkout/family-white-black-white',
-      'white-white-black': '/checkout/family-white-white-black',
-      'white-white-white': '/checkout/family-white-white-white'
-    }
-  }
-};
 
-// Current selection state
-let currentSelection = {
-  bundle: 'single', // default selection
-  colors: {
-    1: 'black', // default color for item 1
-    2: 'black', // default color for item 2 (duo/family)
-    3: 'black'  // default color for item 3 (family only)
-  }
-};
 
-// Force update bundle prices (must be defined before other functions)
-function updateBundlePricesForced() {
-  // Update Single bundle price
-  const singlePriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-price');
-  singlePriceElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.single.price.toFixed(2)}`;
-  });
-  
-  // Update Duo bundle price
-  const duoPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-price');
-  duoPriceElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.duo.price.toFixed(2)}`;
-  });
-  
-  // Update Family bundle price
-  const familyPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-price');
-  familyPriceElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.family.price.toFixed(2)}`;
-  });
-  
-  // Update savings labels
-  const singleSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-label');
-  singleSavingsElements.forEach(el => {
-    el.innerHTML = `Save £${BUNDLE_CONFIG.single.savings.toFixed(2)}`;
-  });
-  
-  const duoSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-label');
-  duoSavingsElements.forEach(el => {
-    el.innerHTML = `Save £${BUNDLE_CONFIG.duo.savings.toFixed(2)}`;
-  });
-  
-  const familySavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-label');
-  familySavingsElements.forEach(el => {
-    el.innerHTML = `Save £${BUNDLE_CONFIG.family.savings.toFixed(2)}`;
-  });
-  
-  // Update original prices
-  const singleOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-full-price');
-  singleOriginalElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.single.originalPrice.toFixed(2)}`;
-  });
-  
-  const duoOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-full-price');
-  duoOriginalElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.duo.originalPrice.toFixed(2)}`;
-  });
-  
-  const familyOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-full-price');
-  familyOriginalElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.family.originalPrice.toFixed(2)}`;
-  });
-}
-
-// Update main price display
-function updateMainPrice() {
-  const config = BUNDLE_CONFIG[currentSelection.bundle];
-  
-  if (config) {
-    // Update main price in add to cart button (this is the specific element you mentioned)
-    const mainPriceElement = document.querySelector('#main-atc-price-template--24924471296325__main');
-    if (mainPriceElement) {
-      mainPriceElement.innerHTML = `£${config.price.toFixed(2)}`;
-    }
-    
-    // Also try alternative selectors for the add to cart price
-    const mainAtcPrice = document.querySelector('.main-atc-price');
-    if (mainAtcPrice) {
-      mainAtcPrice.innerHTML = `£${config.price.toFixed(2)}`;
-    }
-    
-    // Update all price elements in the main price display section
-    const priceRegular = document.querySelector('.price-item--regular.main-price');
-    const priceSale = document.querySelector('.price-item--sale.main-price');
-    const priceCompare = document.querySelector('.price-item--regular.main-comapre-price');
-    const savingsBadge = document.querySelector('.badge.price__badge-sale .nowrap');
-    
-    if (priceRegular) {
-      priceRegular.innerHTML = `£${config.price.toFixed(2)} GBP`;
-    }
-    
-    if (priceSale) {
-      priceSale.innerHTML = `£${config.price.toFixed(2)} GBP`;
-    }
-    
-    if (priceCompare) {
-      priceCompare.innerHTML = `£${config.originalPrice.toFixed(2)} GBP`;
-    }
-    
-    if (savingsBadge) {
-      savingsBadge.innerHTML = `Save <br/>£${config.savings.toFixed(2)}`;
-    }
-    
-    // Force update all bundle bar prices to ensure they show correct values
-    updateBundlePricesForced();
-  }
-}
-
-// Update bundle prices in the selection boxes
-function updateBundlePrices() {
-  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-  
-  bundleBars.forEach(bar => {
-    const titleElement = bar.querySelector('.kaching-bundles__bar-title');
-    const priceElement = bar.querySelector('.kaching-bundles__bar-price');
-    const fullPriceElement = bar.querySelector('.kaching-bundles__bar-full-price');
-    const savingsElement = bar.querySelector('.kaching-bundles__bar-label');
-    
-    if (titleElement) {
-      const titleText = titleElement.textContent.toLowerCase();
-      let bundleType = '';
-      
-      if (titleText.includes('single')) {
-        bundleType = 'single';
-      } else if (titleText.includes('duo')) {
-        bundleType = 'duo';
-      } else if (titleText.includes('family')) {
-        bundleType = 'family';
-      }
-      
-      if (bundleType && BUNDLE_CONFIG[bundleType]) {
-        const config = BUNDLE_CONFIG[bundleType];
-        
-        if (priceElement) {
-          // Clear any existing content and set new price
-          priceElement.innerHTML = `£${config.price.toFixed(2)}`;
-        }
-        
-        if (fullPriceElement) {
-          fullPriceElement.innerHTML = `£${config.originalPrice.toFixed(2)}`;
-        }
-        
-        if (savingsElement) {
-          savingsElement.innerHTML = `Save £${config.savings.toFixed(2)}`;
-        }
-      }
-    }
-  });
-}
-
-// Initialize color dropdowns with black and white options
-function initializeColorDropdowns() {
-  const colorDropdowns = document.querySelectorAll('.kaching-bundles__swatch-dropdown');
-  
-  colorDropdowns.forEach(dropdown => {
-    // Create dropdown options if they don't exist
-    if (!dropdown.querySelector('.color-options')) {
-      createColorDropdownOptions(dropdown);
-    }
-  });
-}
-
-// Create color dropdown options
-function createColorDropdownOptions(dropdown) {
-  const currentSelector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
-  
-  // Create options container
-  const optionsContainer = document.createElement('div');
-  optionsContainer.className = 'color-options';
-  optionsContainer.style.display = 'none';
-  
-  // Create black option
-  const blackOption = createColorOption('black', 'rgba(0, 0, 0, 1)');
-  const whiteOption = createColorOption('white', 'rgba(255, 255, 255, 1)');
-  
-  optionsContainer.appendChild(blackOption);
-  optionsContainer.appendChild(whiteOption);
-  dropdown.appendChild(optionsContainer);
-  
-  // Add click listener to show/hide options
-  currentSelector.addEventListener('click', function(e) {
-    e.stopPropagation();
-    toggleColorDropdown(dropdown);
-  });
-  
-  // Close dropdown when clicking outside
-  document.addEventListener('click', function() {
-    closeAllColorDropdowns();
-  });
-}
-
-// Create individual color option
-function createColorOption(color, colorValue) {
-  const option = document.createElement('div');
-  option.className = 'color-option';
-  option.dataset.color = color;
-  
-  const swatch = document.createElement('div');
-  swatch.className = 'kaching-bundles__swatch';
-  swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${colorValue};`;
-  
-  const label = document.createElement('span');
-  label.textContent = color.charAt(0).toUpperCase() + color.slice(1);
-  
-  option.appendChild(swatch);
-  option.appendChild(label);
-  
-  // Add click listener for color selection
-  option.addEventListener('click', function() {
-    selectColor(this);
-  });
-  
-  return option;
-}
-
-// Toggle color dropdown visibility
-function toggleColorDropdown(dropdown) {
-  closeAllColorDropdowns();
-  const options = dropdown.querySelector('.color-options');
-  if (options) {
-    options.style.display = options.style.display === 'none' ? 'block' : 'none';
-  }
-}
-
-// Close all color dropdowns
-function closeAllColorDropdowns() {
-  const allOptions = document.querySelectorAll('.color-options');
-  allOptions.forEach(options => {
-    options.style.display = 'none';
-  });
-}
-
-// Handle color selection
-function selectColor(optionElement) {
-  const color = optionElement.dataset.color;
-  const dropdown = optionElement.closest('.kaching-bundles__swatch-dropdown');
-  const variant = dropdown.closest('.kaching-bundles__bar-variant');
-  const bundleBar = variant.closest('.kaching-bundles__bar');
-  const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
-  
-  if (numberElement) {
-    const itemNumber = parseInt(numberElement.textContent);
-    
-    // Update selection state
-    currentSelection.colors[itemNumber] = color;
-    
-    // Update visual display
-    updateColorDisplay(dropdown, color);
-    
-    // Close dropdown
-    closeAllColorDropdowns();
-    
-    // Update main price if this bundle is selected
-    const bundleRadio = bundleBar.querySelector('input[type="radio"]');
-    if (bundleRadio && bundleRadio.checked) {
-      updateMainPrice();
-    }
-  }
-}
-
-// Update color display in dropdown
-function updateColorDisplay(dropdown, selectedColor) {
-  const selector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
-  const swatch = selector.querySelector('.kaching-bundles__swatch');
-  const label = selector.querySelector('span:last-child');
-  
-  const colorValue = selectedColor === 'black' ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
-  const borderColor = selectedColor === 'white' ? 'rgba(0, 0, 0, 1)' : colorValue;
-  
-  if (swatch) {
-    swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${borderColor};`;
-  }
-  
-  if (label) {
-    label.textContent = selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1);
-  }
-}
-
-// Set up bundle selection (radio button) listeners
-function setupBundleSelectionListeners() {
-  const bundleRadios = document.querySelectorAll('input[name^="kaching-bundles-deal"]');
-  
-  bundleRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-      if (this.checked) {
-        // Determine which bundle was selected
-        const bundleBar = this.closest('.kaching-bundles__bar');
-        const titleElement = bundleBar.querySelector('.kaching-bundles__bar-title');
-        
-        if (titleElement) {
-          const titleText = titleElement.textContent.toLowerCase();
-          if (titleText.includes('single')) {
-            currentSelection.bundle = 'single';
-          } else if (titleText.includes('duo')) {
-            currentSelection.bundle = 'duo';
-          } else if (titleText.includes('family')) {
-            currentSelection.bundle = 'family';
-          }
-        }
-        
-        // Update main price display
-        updateMainPrice();
-        
-        // Update bundle selection visual state
-        updateBundleSelection();
-      }
-    });
-  });
-}
-
-// Set up color selection listeners (enhanced for dropdowns)
-function setupColorSelectionListeners() {
-  // This is now handled in the dropdown initialization
-  // Additional listeners can be added here if needed
-}
-
-// Set up add to cart button listener
-function setupAddToCartListener() {
-  const addToCartButton = document.querySelector('#ProductSubmitButton-template--24924471296325__main');
-  
-  if (addToCartButton) {
-    addToCartButton.addEventListener('click', function(e) {
-      e.preventDefault(); // Prevent default form submission
-      
-      // Get the redirect URL based on current selection
-      const redirectUrl = getRedirectUrl();
-      
-      // Log current selection for debugging
-      console.log('Current Selection:', currentSelection);
-      console.log('Redirect URL:', redirectUrl);
-      
-      // Redirect to the appropriate checkout page
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      } else {
-        console.error('No redirect URL found for current selection');
-        alert('Please select all required options before adding to cart.');
-      }
-    });
-  }
-}
-
-// Update bundle selection visual state
-function updateBundleSelection() {
-  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-  
-  bundleBars.forEach(bar => {
-    const titleElement = bar.querySelector('.kaching-bundles__bar-title');
-    
-    if (titleElement) {
-      const titleText = titleElement.textContent.toLowerCase();
-      let isSelected = false;
-      
-      if (titleText.includes('single') && currentSelection.bundle === 'single') {
-        isSelected = true;
-      } else if (titleText.includes('duo') && currentSelection.bundle === 'duo') {
-        isSelected = true;
-      } else if (titleText.includes('family') && currentSelection.bundle === 'family') {
-        isSelected = true;
-      }
-      
-      if (isSelected) {
-        bar.classList.add('kaching-bundles__bar--selected');
-        const radio = bar.querySelector('input[type="radio"]');
-        if (radio) radio.checked = true;
-      } else {
-        bar.classList.remove('kaching-bundles__bar--selected');
-      }
-    }
-  });
-}
-
-// Get redirect URL based on current selection and all color combinations
-function getRedirectUrl() {
-  const config = BUNDLE_CONFIG[currentSelection.bundle];
-  
-  if (!config) return null;
-  
-  let colorKey = '';
-  
-  switch (currentSelection.bundle) {
-    case 'single':
-      colorKey = currentSelection.colors[1];
-      break;
-      
-    case 'duo':
-      colorKey = `${currentSelection.colors[1]}-${currentSelection.colors[2]}`;
-      break;
-      
-    case 'family':
-      colorKey = `${currentSelection.colors[1]}-${currentSelection.colors[2]}-${currentSelection.colors[3]}`;
-      break;
-  }
-  
-  return config.urls[colorKey] || null;
-}
-
-// Get current selection summary for debugging
-function getSelectionSummary() {
-  const config = BUNDLE_CONFIG[currentSelection.bundle];
-  
-  return {
-    bundle: currentSelection.bundle,
-    colors: currentSelection.colors,
-    price: config ? config.price : null,
-    redirectUrl: getRedirectUrl()
-  };
-}
-
-// Add CSS for visual feedback and dropdown styling
-function addCustomStyles() {
-  const style = document.createElement('style');
-  style.textContent = `
-    .kaching-bundles__bar-variant-select.selected {
-      border: 2px solid #4681f4 !important;
-      background-color: rgba(70, 129, 244, 0.1) !important;
-    }
-    
-    .kaching-bundles__bar--selected {
-      border: 2px solid #4681f4 !important;
-      background-color: rgba(70, 129, 244, 0.05) !important;
-    }
-    
-    .kaching-bundles__bar-variant-select:hover {
-      cursor: pointer;
-      opacity: 0.8;
-    }
-    
-    .kaching-bundles__bar-main:hover {
-      cursor: pointer;
-    }
-    
-    .kaching-bundles__swatch-dropdown {
-      position: relative;
-    }
-    
-    .color-options {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      z-index: 1000;
-      min-width: 100px;
-    }
-    
-    .color-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    
-    .color-option:hover {
-      background-color: #f5f5f5;
-    }
-    
-    .color-option:first-child {
-      border-radius: 4px 4px 0 0;
-    }
-    
-    .color-option:last-child {
-      border-radius: 0 0 4px 4px;
-    }
-    
-    .color-option span {
-      font-size: 14px;
-      color: #333;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-// Initialize the system
-function initializeBundleSystem() {
-  console.log('Initializing Bundle System...');
-  
-  // Set up bundle selection listeners
-  setupBundleSelectionListeners();
-  
-  // Set up color selection listeners
-  setupColorSelectionListeners();
-  
-  // Set up add to cart button listener
-  setupAddToCartListener();
-  
-  // Update initial prices in bundle boxes
-  updateBundlePrices();
-  
-  // Force update all prices immediately
-  setTimeout(() => {
-    console.log('Forcing price updates...');
-    updateBundlePricesForced();
-    updateMainPrice();
-  }, 100);
-  
-  // Initialize color dropdowns with options
-  initializeColorDropdowns();
-  
-  // Set up periodic price updates to ensure prices stay correct
-  setInterval(() => {
-    updateBundlePricesForced();
-  }, 2000);
-  
-  console.log('Bundle System initialized successfully!');
-}
-
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM loaded, initializing bundle system...');
-  initializeBundleSystem();
-  addCustomStyles();
-});
-
-// Also initialize if DOM is already loaded
-if (document.readyState === 'loading') {
-  // DOM hasn't finished loading yet
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded (fallback), initializing bundle system...');
-    initializeBundleSystem();
-    addCustomStyles();
-  });
-} else {
-  // DOM has already loaded
-  console.log('DOM already loaded, initializing bundle system immediately...');
-  initializeBundleSystem();
-  addCustomStyles();
-}
-
-// Export functions for external use if needed
-window.BundleSystem = {
-  updateSelection: function(bundle, colors) {
-    currentSelection.bundle = bundle;
-    if (colors) {
-      currentSelection.colors = { ...currentSelection.colors, ...colors };
-    }
-    updateMainPrice();
-    updateBundleSelection();
-  },
-  
-  getCurrentSelection: function() {
-    return { ...currentSelection };
-  },
-  
-  getSelectionSummary: getSelectionSummary,
-  
-  getRedirectUrl: getRedirectUrl,
-  
-  // Manual color update function
-  setColor: function(itemNumber, color) {
-    if (currentSelection.colors.hasOwnProperty(itemNumber)) {
-      currentSelection.colors[itemNumber] = color;
-      
-      // Update visual display
-      const variants = document.querySelectorAll('.kaching-bundles__bar-variant');
-      variants.forEach(variant => {
-        const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
-        if (numberElement && parseInt(numberElement.textContent) === itemNumber) {
-          const dropdown = variant.querySelector('.kaching-bundles__swatch-dropdown');
-          if (dropdown) {
-            updateColorDisplay(dropdown, color);
-          }
-        }
-      });
-    }
-  },
-  
-  // Force price update function
-  updatePrices: function() {
-    updateBundlePricesForced();
-    updateMainPrice();
-  }
-};
-</script> -->
-
-
-<!-- <script>
-  // Bundle variants configuration with all possible color combinations
-const BUNDLE_CONFIG = {
-  'single': {
-    price: 29.99,
-    originalPrice: 69.99,
-    savings: 40.00,
-    urls: {
-      'black': 'https://n2kzpa-uw.myshopify.com/cart/52378434830669:1',
-      'white': 'https://n2kzpa-uw.myshopify.com/cart/52378434863437:1'
-    }
-  },
-  'duo': {
-    price: 38.99,
-    originalPrice: 139.98,
-    savings: 100.99,
-    urls: {
-      'black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436567373:1',
-      'black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436600141:1',
-      'white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436632909:1',
-      'white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436665677:1'
-    }
-  },
-  'family': {
-    price: 49.99,
-    originalPrice: 209.97,
-    savings: 159.98,
-    urls: {
-      'black-black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436698445:1',
-      'black-black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436731213:1',
-      'black-white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436763981:1',
-      'black-white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436796749:1',
-      'white-black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436829517:1',
-      'white-black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436862285:1',
-      'white-white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436895053:1',
-      'white-white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436927821:1'
-    }
-  }
-};
-
-// Current selection state
-let currentSelection = {
-  bundle: 'single', // default selection
-  colors: {
-    1: 'black', // default color for item 1
-    2: 'black', // default color for item 2 (duo/family)
-    3: 'black'  // default color for item 3 (family only)
-  }
-};
-
-// Force update bundle prices (must be defined before other functions)
-function updateBundlePricesForced() {
-  // Update Single bundle price
-  const singlePriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-price');
-  singlePriceElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.single.price.toFixed(2)}`;
-  });
-  
-  // Update Duo bundle price
-  const duoPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-price');
-  duoPriceElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.duo.price.toFixed(2)}`;
-  });
-  
-  // Update Family bundle price
-  const familyPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-price');
-  familyPriceElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.family.price.toFixed(2)}`;
-  });
-  
-  // Update savings labels
-  const singleSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-label');
-  singleSavingsElements.forEach(el => {
-    el.innerHTML = `Save £${BUNDLE_CONFIG.single.savings.toFixed(2)}`;
-  });
-  
-  const duoSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-label');
-  duoSavingsElements.forEach(el => {
-    el.innerHTML = `Save £${BUNDLE_CONFIG.duo.savings.toFixed(2)}`;
-  });
-  
-  const familySavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-label');
-  familySavingsElements.forEach(el => {
-    el.innerHTML = `Save £${BUNDLE_CONFIG.family.savings.toFixed(2)}`;
-  });
-  
-  // Update original prices
-  const singleOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-full-price');
-  singleOriginalElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.single.originalPrice.toFixed(2)}`;
-  });
-  
-  const duoOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-full-price');
-  duoOriginalElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.duo.originalPrice.toFixed(2)}`;
-  });
-  
-  const familyOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-full-price');
-  familyOriginalElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.family.originalPrice.toFixed(2)}`;
-  });
-}
-
-// Update main price display
-function updateMainPrice() {
-  const config = BUNDLE_CONFIG[currentSelection.bundle];
-  
-  if (config) {
-    // Update main price in add to cart button (this is the specific element you mentioned)
-    const mainPriceElement = document.querySelector('#main-atc-price-template--24924471296325__main');
-    if (mainPriceElement) {
-      mainPriceElement.innerHTML = `£${config.price.toFixed(2)}`;
-    }
-    
-    // Also try alternative selectors for the add to cart price
-    const mainAtcPrice = document.querySelector('.main-atc-price');
-    if (mainAtcPrice) {
-      mainAtcPrice.innerHTML = `£${config.price.toFixed(2)}`;
-    }
-    
-    // Update all price elements in the main price display section
-    const priceRegular = document.querySelector('.price-item--regular.main-price');
-    const priceSale = document.querySelector('.price-item--sale.main-price');
-    const priceCompare = document.querySelector('.price-item--regular.main-comapre-price');
-    const savingsBadge = document.querySelector('.badge.price__badge-sale .nowrap');
-    
-    if (priceRegular) {
-      priceRegular.innerHTML = `£${config.price.toFixed(2)} GBP`;
-    }
-    
-    if (priceSale) {
-      priceSale.innerHTML = `£${config.price.toFixed(2)} GBP`;
-    }
-    
-    if (priceCompare) {
-      priceCompare.innerHTML = `£${config.originalPrice.toFixed(2)} GBP`;
-    }
-    
-    if (savingsBadge) {
-      savingsBadge.innerHTML = `Save <br/>£${config.savings.toFixed(2)}`;
-    }
-    
-    // Force update all bundle bar prices to ensure they show correct values
-    updateBundlePricesForced();
-  }
-}
-
-// Update bundle prices in the selection boxes
-function updateBundlePrices() {
-  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-  
-  bundleBars.forEach(bar => {
-    const titleElement = bar.querySelector('.kaching-bundles__bar-title');
-    const priceElement = bar.querySelector('.kaching-bundles__bar-price');
-    const fullPriceElement = bar.querySelector('.kaching-bundles__bar-full-price');
-    const savingsElement = bar.querySelector('.kaching-bundles__bar-label');
-    
-    if (titleElement) {
-      const titleText = titleElement.textContent.toLowerCase();
-      let bundleType = '';
-      
-      if (titleText.includes('single')) {
-        bundleType = 'single';
-      } else if (titleText.includes('duo')) {
-        bundleType = 'duo';
-      } else if (titleText.includes('family')) {
-        bundleType = 'family';
-      }
-      
-      if (bundleType && BUNDLE_CONFIG[bundleType]) {
-        const config = BUNDLE_CONFIG[bundleType];
-        
-        if (priceElement) {
-          // Clear any existing content and set new price
-          priceElement.innerHTML = `£${config.price.toFixed(2)}`;
-        }
-        
-        if (fullPriceElement) {
-          fullPriceElement.innerHTML = `£${config.originalPrice.toFixed(2)}`;
-        }
-        
-        if (savingsElement) {
-          savingsElement.innerHTML = `Save £${config.savings.toFixed(2)}`;
-        }
-      }
-    }
-  });
-}
-
-// Initialize color dropdowns with black and white options
-function initializeColorDropdowns() {
-  const colorDropdowns = document.querySelectorAll('.kaching-bundles__swatch-dropdown');
-  
-  colorDropdowns.forEach(dropdown => {
-    // Create dropdown options if they don't exist
-    if (!dropdown.querySelector('.color-options')) {
-      createColorDropdownOptions(dropdown);
-    }
-  });
-}
-
-// Create color dropdown options
-function createColorDropdownOptions(dropdown) {
-  const currentSelector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
-  
-  // Create options container
-  const optionsContainer = document.createElement('div');
-  optionsContainer.className = 'color-options';
-  optionsContainer.style.display = 'none';
-  
-  // Create black option
-  const blackOption = createColorOption('black', 'rgba(0, 0, 0, 1)');
-  const whiteOption = createColorOption('white', 'rgba(255, 255, 255, 1)');
-  
-  optionsContainer.appendChild(blackOption);
-  optionsContainer.appendChild(whiteOption);
-  dropdown.appendChild(optionsContainer);
-  
-  // Add click listener to show/hide options
-  currentSelector.addEventListener('click', function(e) {
-    e.stopPropagation();
-    toggleColorDropdown(dropdown);
-  });
-  
-  // Close dropdown when clicking outside
-  document.addEventListener('click', function() {
-    closeAllColorDropdowns();
-  });
-}
-
-// Create individual color option
-function createColorOption(color, colorValue) {
-  const option = document.createElement('div');
-  option.className = 'color-option';
-  option.dataset.color = color;
-  
-  const swatch = document.createElement('div');
-  swatch.className = 'kaching-bundles__swatch';
-  swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${colorValue};`;
-  
-  const label = document.createElement('span');
-  label.textContent = color.charAt(0).toUpperCase() + color.slice(1);
-  
-  option.appendChild(swatch);
-  option.appendChild(label);
-  
-  // Add click listener for color selection
-  option.addEventListener('click', function() {
-    selectColor(this);
-  });
-  
-  return option;
-}
-
-// Toggle color dropdown visibility
-function toggleColorDropdown(dropdown) {
-  closeAllColorDropdowns();
-  const options = dropdown.querySelector('.color-options');
-  if (options) {
-    options.style.display = options.style.display === 'none' ? 'block' : 'none';
-  }
-}
-
-// Close all color dropdowns
-function closeAllColorDropdowns() {
-  const allOptions = document.querySelectorAll('.color-options');
-  allOptions.forEach(options => {
-    options.style.display = 'none';
-  });
-}
-
-// Handle color selection
-function selectColor(optionElement) {
-  const color = optionElement.dataset.color;
-  const dropdown = optionElement.closest('.kaching-bundles__swatch-dropdown');
-  const variant = dropdown.closest('.kaching-bundles__bar-variant');
-  const bundleBar = variant.closest('.kaching-bundles__bar');
-  const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
-  
-  if (numberElement) {
-    const itemNumber = parseInt(numberElement.textContent);
-    
-    // Update selection state
-    currentSelection.colors[itemNumber] = color;
-    
-    // Update visual display
-    updateColorDisplay(dropdown, color);
-    
-    // Close dropdown
-    closeAllColorDropdowns();
-    
-    // Update main price if this bundle is selected
-    const bundleRadio = bundleBar.querySelector('input[type="radio"]');
-    if (bundleRadio && bundleRadio.checked) {
-      updateMainPrice();
-    }
-  }
-}
-
-// Update color display in dropdown
-function updateColorDisplay(dropdown, selectedColor) {
-  const selector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
-  const swatch = selector.querySelector('.kaching-bundles__swatch');
-  const label = selector.querySelector('span:last-child');
-  
-  const colorValue = selectedColor === 'black' ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
-  const borderColor = selectedColor === 'white' ? 'rgba(0, 0, 0, 1)' : colorValue;
-  
-  if (swatch) {
-    swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${borderColor};`;
-  }
-  
-  if (label) {
-    label.textContent = selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1);
-  }
-}
-
-// Set up bundle selection (radio button) listeners
-function setupBundleSelectionListeners() {
-  const bundleRadios = document.querySelectorAll('input[name^="kaching-bundles-deal"]');
-  
-  bundleRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-      if (this.checked) {
-        // Determine which bundle was selected
-        const bundleBar = this.closest('.kaching-bundles__bar');
-        const titleElement = bundleBar.querySelector('.kaching-bundles__bar-title');
-        
-        if (titleElement) {
-          const titleText = titleElement.textContent.toLowerCase();
-          if (titleText.includes('single')) {
-            currentSelection.bundle = 'single';
-          } else if (titleText.includes('duo')) {
-            currentSelection.bundle = 'duo';
-          } else if (titleText.includes('family')) {
-            currentSelection.bundle = 'family';
-          }
-          
-          console.log('Bundle selected:', currentSelection.bundle);
-        }
-        
-        // Update main price display immediately
-        updateMainPrice();
-        
-        // Update bundle selection visual state
-        updateBundleSelection();
-        
-        // Additional delayed update to ensure price sticks
-        setTimeout(() => {
-          updateMainPrice();
-        }, 50);
-      }
-    });
-  });
-  
-  // Also set up click listeners on the bundle bar containers
-  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-  bundleBars.forEach(bar => {
-    bar.addEventListener('click', function() {
-      const radio = this.querySelector('input[type="radio"]');
-      if (radio && !radio.checked) {
-        radio.checked = true;
-        radio.dispatchEvent(new Event('change'));
-      }
-    });
-  });
-}
-
-// Set up color selection listeners (enhanced for dropdowns)
-function setupColorSelectionListeners() {
-  // This is now handled in the dropdown initialization
-  // Additional listeners can be added here if needed
-}
-
-// Set up add to cart button listener
-function setupAddToCartListener() {
-  const addToCartButton = document.querySelector('#ProductSubmitButton-template--24924471296325__main');
-  
-  if (addToCartButton) {
-    addToCartButton.addEventListener('click', function(e) {
-      e.preventDefault(); // Prevent default form submission
-      
-      // Get the redirect URL based on current selection
-      const redirectUrl = getRedirectUrl();
-      
-      // Log current selection for debugging
-      console.log('Current Selection:', currentSelection);
-      console.log('Redirect URL:', redirectUrl);
-      
-      // Redirect to the appropriate checkout page
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      } else {
-        console.error('No redirect URL found for current selection');
-        alert('Please select all required options before adding to cart.');
-      }
-    });
-  }
-}
-
-// Update bundle selection visual state
-function updateBundleSelection() {
-  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-  
-  bundleBars.forEach(bar => {
-    const titleElement = bar.querySelector('.kaching-bundles__bar-title');
-    
-    if (titleElement) {
-      const titleText = titleElement.textContent.toLowerCase();
-      let isSelected = false;
-      
-      if (titleText.includes('single') && currentSelection.bundle === 'single') {
-        isSelected = true;
-      } else if (titleText.includes('duo') && currentSelection.bundle === 'duo') {
-        isSelected = true;
-      } else if (titleText.includes('family') && currentSelection.bundle === 'family') {
-        isSelected = true;
-      }
-      
-      if (isSelected) {
-        bar.classList.add('kaching-bundles__bar--selected');
-        const radio = bar.querySelector('input[type="radio"]');
-        if (radio) radio.checked = true;
-      } else {
-        bar.classList.remove('kaching-bundles__bar--selected');
-      }
-    }
-  });
-}
-
-// Get redirect URL based on current selection and all color combinations
-function getRedirectUrl() {
-  const config = BUNDLE_CONFIG[currentSelection.bundle];
-  
-  if (!config) return null;
-  
-  let colorKey = '';
-  
-  switch (currentSelection.bundle) {
-    case 'single':
-      colorKey = currentSelection.colors[1];
-      break;
-      
-    case 'duo':
-      colorKey = `${currentSelection.colors[1]}-${currentSelection.colors[2]}`;
-      break;
-      
-    case 'family':
-      colorKey = `${currentSelection.colors[1]}-${currentSelection.colors[2]}-${currentSelection.colors[3]}`;
-      break;
-  }
-  
-  return config.urls[colorKey] || null;
-}
-
-// Get current selection summary for debugging
-function getSelectionSummary() {
-  const config = BUNDLE_CONFIG[currentSelection.bundle];
-  
-  return {
-    bundle: currentSelection.bundle,
-    colors: currentSelection.colors,
-    price: config ? config.price : null,
-    redirectUrl: getRedirectUrl()
-  };
-}
-
-// Add CSS for visual feedback and dropdown styling
-function addCustomStyles() {
-  const style = document.createElement('style');
-  style.textContent = `
-    
-    
-    .kaching-bundles__bar-main:hover {
-      cursor: pointer;
-    }
-    
-    .kaching-bundles__swatch-dropdown {
-      position: relative;
-    }
-    
-    .color-options {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      z-index: 1000;
-      min-width: 100px;
-    }
-    
-    .color-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    
-    .color-option:hover {
-      background-color: #f5f5f5;
-    }
-    
-    .color-option:first-child {
-      border-radius: 4px 4px 0 0;
-    }
-    
-    .color-option:last-child {
-      border-radius: 0 0 4px 4px;
-    }
-    
-    .color-option span {
-      font-size: 14px;
-      color: #333;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-// Initialize the system
-function initializeBundleSystem() {
-  console.log('Initializing Bundle System...');
-  
-  // Set up bundle selection listeners
-  setupBundleSelectionListeners();
-  
-  // Set up color selection listeners
-  setupColorSelectionListeners();
-  
-  // Set up add to cart button listener
-  setupAddToCartListener();
-  
-  // Update initial prices in bundle boxes
-  updateBundlePrices();
-  
-  // Force update all prices immediately
-  setTimeout(() => {
-    console.log('Forcing price updates...');
-    updateBundlePricesForced();
-    updateMainPrice();
-  }, 100);
-  
-  // Initialize color dropdowns with options
-  initializeColorDropdowns();
-  
-  // Set up periodic price updates to ensure prices stay correct
-  setInterval(() => {
-    updateBundlePricesForced();
-  }, 2000);
-  
-  console.log('Bundle System initialized successfully!');
-}
-
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM loaded, initializing bundle system...');
-  initializeBundleSystem();
-  addCustomStyles();
-});
-
-// Also initialize if DOM is already loaded
-if (document.readyState === 'loading') {
-  // DOM hasn't finished loading yet
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded (fallback), initializing bundle system...');
-    initializeBundleSystem();
-    addCustomStyles();
-  });
-} else {
-  // DOM has already loaded
-  console.log('DOM already loaded, initializing bundle system immediately...');
-  initializeBundleSystem();
-  addCustomStyles();
-}
-
-// Export functions for external use if needed
-window.BundleSystem = {
-  updateSelection: function(bundle, colors) {
-    currentSelection.bundle = bundle;
-    if (colors) {
-      currentSelection.colors = { ...currentSelection.colors, ...colors };
-    }
-    updateMainPrice();
-    updateBundleSelection();
-  },
-  
-  getCurrentSelection: function() {
-    return { ...currentSelection };
-  },
-  
-  getSelectionSummary: getSelectionSummary,
-  
-  getRedirectUrl: getRedirectUrl,
-  
-  // Manual color update function
-  setColor: function(itemNumber, color) {
-    if (currentSelection.colors.hasOwnProperty(itemNumber)) {
-      currentSelection.colors[itemNumber] = color;
-      
-      // Update visual display
-      const variants = document.querySelectorAll('.kaching-bundles__bar-variant');
-      variants.forEach(variant => {
-        const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
-        if (numberElement && parseInt(numberElement.textContent) === itemNumber) {
-          const dropdown = variant.querySelector('.kaching-bundles__swatch-dropdown');
-          if (dropdown) {
-            updateColorDisplay(dropdown, color);
-          }
-        }
-      });
-    }
-  },
-  
-  // Force price update function
-  updatePrices: function() {
-    updateBundlePricesForced();
-    updateMainPrice();
-  }
-};
-</script> -->
-
-<!-- <script>
-  // Bundle variants configuration with all possible color combinations
-const BUNDLE_CONFIG = {
-  'single': {
-    price: 29.99,
-    originalPrice: 69.99,
-    savings: 40.00,
-    urls: {
-      'black': 'https://n2kzpa-uw.myshopify.com/cart/52378434830669:1',
-      'white': 'https://n2kzpa-uw.myshopify.com/cart/52378434863437:1'
-    }
-  },
-  'duo': {
-    price: 38.99,
-    originalPrice: 139.98,
-    savings: 100.99,
-    urls: {
-      'black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436567373:1',
-      'black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436600141:1',
-      'white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436632909:1',
-      'white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436665677:1'
-    }
-  },
-  'family': {
-    price: 49.99,
-    originalPrice: 209.97,
-    savings: 159.98,
-    urls: {
-      'black-black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436698445:1',
-      'black-black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436731213:1',
-      'black-white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436763981:1',
-      'black-white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436796749:1',
-      'white-black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436829517:1',
-      'white-black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436862285:1',
-      'white-white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436895053:1',
-      'white-white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436927821:1'
-    }
-  }
-};
-
-// Current selection state
-let currentSelection = {
-  bundle: 'single',
-  colors: {
-    1: 'black',
-    2: 'black', 
-    3: 'black'
-  }
-};
-
-// Force update bundle prices
-function updateBundlePricesForced() {
-  const singlePriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-price');
-  singlePriceElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.single.price.toFixed(2)}`;
-  });
-  
-  const duoPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-price');
-  duoPriceElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.duo.price.toFixed(2)}`;
-  });
-  
-  const familyPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-price');
-  familyPriceElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.family.price.toFixed(2)}`;
-  });
-  
-  // Update savings labels
-  const singleSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-label');
-  singleSavingsElements.forEach(el => {
-    el.innerHTML = `Save £${BUNDLE_CONFIG.single.savings.toFixed(2)}`;
-  });
-  
-  const duoSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-label');
-  duoSavingsElements.forEach(el => {
-    el.innerHTML = `Save £${BUNDLE_CONFIG.duo.savings.toFixed(2)}`;
-  });
-  
-  const familySavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-label');
-  familySavingsElements.forEach(el => {
-    el.innerHTML = `Save £${BUNDLE_CONFIG.family.savings.toFixed(2)}`;
-  });
-  
-  // Update original prices
-  const singleOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-full-price');
-  singleOriginalElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.single.originalPrice.toFixed(2)}`;
-  });
-  
-  const duoOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-full-price');
-  duoOriginalElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.duo.originalPrice.toFixed(2)}`;
-  });
-  
-  const familyOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-full-price');
-  familyOriginalElements.forEach(el => {
-    el.innerHTML = `£${BUNDLE_CONFIG.family.originalPrice.toFixed(2)}`;
-  });
-}
-
-// Update main price display
-function updateMainPrice() {
-  const config = BUNDLE_CONFIG[currentSelection.bundle];
-  
-  if (config) {
-    const mainPriceElement = document.querySelector('#main-atc-price-template--24924471296325__main');
-    if (mainPriceElement) {
-      mainPriceElement.innerHTML = `£${config.price.toFixed(2)}`;
-    }
-    
-    const mainAtcPrice = document.querySelector('.main-atc-price');
-    if (mainAtcPrice) {
-      mainAtcPrice.innerHTML = `£${config.price.toFixed(2)}`;
-    }
-    
-    const priceRegular = document.querySelector('.price-item--regular.main-price');
-    const priceSale = document.querySelector('.price-item--sale.main-price');
-    const priceCompare = document.querySelector('.price-item--regular.main-comapre-price');
-    const savingsBadge = document.querySelector('.badge.price__badge-sale .nowrap');
-    
-    if (priceRegular) {
-      priceRegular.innerHTML = `£${config.price.toFixed(2)} GBP`;
-    }
-    
-    if (priceSale) {
-      priceSale.innerHTML = `£${config.price.toFixed(2)} GBP`;
-    }
-    
-    if (priceCompare) {
-      priceCompare.innerHTML = `£${config.originalPrice.toFixed(2)} GBP`;
-    }
-    
-    if (savingsBadge) {
-      savingsBadge.innerHTML = `Save <br/>£${config.savings.toFixed(2)}`;
-    }
-    
-    updateBundlePricesForced();
-  }
-}
-
-// Update bundle prices in the selection boxes
-function updateBundlePrices() {
-  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-  console.log("bundle:", bundleBars)
-  
-  bundleBars.forEach(bar => {
-    const titleElement = bar.querySelector('.kaching-bundles__bar-title');
-    const priceElement = bar.querySelector('.kaching-bundles__bar-price');
-    const fullPriceElement = bar.querySelector('.kaching-bundles__bar-full-price');
-    const savingsElement = bar.querySelector('.kaching-bundles__bar-label');
-    
-    if (titleElement) {
-      const titleText = titleElement.textContent.toLowerCase();
-      let bundleType = '';
-      
-      if (titleText.includes('single')) {
-        bundleType = 'single';
-      } else if (titleText.includes('duo')) {
-        bundleType = 'duo';
-      } else if (titleText.includes('family')) {
-        bundleType = 'family';
-      }
-      
-      if (bundleType && BUNDLE_CONFIG[bundleType]) {
-        const config = BUNDLE_CONFIG[bundleType];
-        
-        if (priceElement) {
-          priceElement.innerHTML = `£${config.price.toFixed(2)}`;
-        }
-        
-        if (fullPriceElement) {
-          fullPriceElement.innerHTML = `£${config.originalPrice.toFixed(2)}`;
-        }
-        
-        if (savingsElement) {
-          savingsElement.innerHTML = `Save £${config.savings.toFixed(2)}`;
-        }
-      }
-    }
-  });
-}
-
-// Get bundle type from bundle bar element
-function getBundleTypeFromBar(bundleBar) {
-  const titleElement = bundleBar.querySelector('.kaching-bundles__bar-title');
-  if (!titleElement) return null;
-  
-  const titleText = titleElement.textContent.toLowerCase();
-  if (titleText.includes('single')) return 'single';
-  if (titleText.includes('duo')) return 'duo';
-  if (titleText.includes('family')) return 'family';
-  return null;
-}
-
-// Enhanced color selection handling
-function handleColorChange(dropdown, selectedColor) {
-  const variant = dropdown.closest('.kaching-bundles__bar-variant');
-  const bundleBar = variant.closest('.kaching-bundles__bar');
-  const bundleType = getBundleTypeFromBar(bundleBar);
-  
-  // Get item number from the variant
-  const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
-  if (!numberElement) return;
-  
-  const itemNumber = parseInt(numberElement.textContent);
-  
-  // Only update color selection if this matches the currently selected bundle
-  const currentBundleRadio = bundleBar.querySelector('input[type="radio"]');
-  if (currentBundleRadio && currentBundleRadio.checked) {
-    currentSelection.colors[itemNumber] = selectedColor;
-    console.log(`Color updated for ${bundleType} item ${itemNumber}: ${selectedColor}`);
-    console.log('Current selection:', currentSelection);
-  }
-  
-  // Update visual display
-  updateColorDisplay(dropdown, selectedColor);
-}
-
-// Initialize color dropdowns with black and white options
-function initializeColorDropdowns() {
-  const colorDropdowns = document.querySelectorAll('.kaching-bundles__swatch-dropdown');
-  
-  colorDropdowns.forEach(dropdown => {
-    if (!dropdown.querySelector('.color-options')) {
-      createColorDropdownOptions(dropdown);
-    }
-  });
-}
-
-// Create color dropdown options
-function createColorDropdownOptions(dropdown) {
-  const currentSelector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
-  
-  const optionsContainer = document.createElement('div');
-  optionsContainer.className = 'color-options';
-  optionsContainer.style.display = 'none';
-  
-  const blackOption = createColorOption('black', 'rgba(0, 0, 0, 1)');
-  const whiteOption = createColorOption('white', 'rgba(255, 255, 255, 1)');
-  
-  optionsContainer.appendChild(blackOption);
-  optionsContainer.appendChild(whiteOption);
-  dropdown.appendChild(optionsContainer);
-  
-  currentSelector.addEventListener('click', function(e) {
-    e.stopPropagation();
-    toggleColorDropdown(dropdown);
-  });
-  
-  document.addEventListener('click', function() {
-    closeAllColorDropdowns();
-  });
-}
-
-// Create individual color option
-function createColorOption(color, colorValue) {
-  const option = document.createElement('div');
-  option.className = 'color-option';
-  option.dataset.color = color;
-  
-  const swatch = document.createElement('div');
-  swatch.className = 'kaching-bundles__swatch';
-  swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${colorValue};`;
-  
-  const label = document.createElement('span');
-  label.textContent = color.charAt(0).toUpperCase() + color.slice(1);
-  
-  option.appendChild(swatch);
-  option.appendChild(label);
-  
-  option.addEventListener('click', function(e) {
-    e.stopPropagation();
-    const dropdown = this.closest('.kaching-bundles__swatch-dropdown');
-    handleColorChange(dropdown, color);
-    closeAllColorDropdowns();
-  });
-  
-  return option;
-}
-
-// Toggle color dropdown visibility
-function toggleColorDropdown(dropdown) {
-  closeAllColorDropdowns();
-  const options = dropdown.querySelector('.color-options');
-  if (options) {
-    options.style.display = options.style.display === 'none' ? 'block' : 'none';
-  }
-}
-
-// Close all color dropdowns
-function closeAllColorDropdowns() {
-  const allOptions = document.querySelectorAll('.color-options');
-  allOptions.forEach(options => {
-    options.style.display = 'none';
-  });
-}
-
-// Update color display in dropdown
-function updateColorDisplay(dropdown, selectedColor) {
-  const selector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
-  const swatch = selector.querySelector('.kaching-bundles__swatch');
-  const label = selector.querySelector('span:last-child');
-  
-  const colorValue = selectedColor === 'black' ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
-  const borderColor = selectedColor === 'white' ? 'rgba(0, 0, 0, 1)' : colorValue;
-  
-  if (swatch) {
-    swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${borderColor};`;
-  }
-  
-  if (label) {
-    label.textContent = selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1);
-  }
-}
-
-// Enhanced bundle selection with proper color state management
-function setupBundleSelectionListeners() {
-  const bundleRadios = document.querySelectorAll('input[name^="kaching-bundles-deal"]');
-  console.log("radios", bundleRadios)
-  
-  bundleRadios.forEach(radio => {
-    radio.addEventListener('change', function() {
-      if (this.checked) {
-        const bundleBar = this.closest('.kaching-bundles__bar');
-        const bundleType = getBundleTypeFromBar(bundleBar);
-        
-        if (bundleType) {
-          console.log('Bundle changed to:', bundleType);
-          currentSelection.bundle = bundleType;
-          
-          // Reset color selections to current visual state for this bundle
-          resetColorsForBundle(bundleBar, bundleType);
-          
-          updateMainPrice();
-          updateBundleSelection();
-          
-          setTimeout(() => {
-            updateMainPrice();
-          }, 50);
-        }
-      }
-    });
-  });
-  
-  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-  bundleBars.forEach(bar => {
-    bar.addEventListener('click', function() {
-      const radio = this.querySelector('input[type="radio"]');
-      if (radio && !radio.checked) {
-        radio.checked = true;
-        radio.dispatchEvent(new Event('change'));
-      }
-    });
-  });
-}
-
-// Reset color selections based on current visual state
-function resetColorsForBundle(bundleBar, bundleType) {
-  const variants = bundleBar.querySelectorAll('.kaching-bundles__bar-variant');
-  
-  variants.forEach(variant => {
-    const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
-    const dropdown = variant.querySelector('.kaching-bundles__swatch-dropdown');
-    
-    if (numberElement && dropdown) {
-      const itemNumber = parseInt(numberElement.textContent);
-      const currentColor = getCurrentColorFromDropdown(dropdown);
-      
-      if (currentColor) {
-        currentSelection.colors[itemNumber] = currentColor;
-      }
-    }
-  });
-  
-  console.log('Colors reset for bundle:', bundleType, currentSelection.colors);
-}
-
-// Get current color from dropdown display
-function getCurrentColorFromDropdown(dropdown) {
-  const selector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
-  const label = selector.querySelector('span:last-child');
-  
-  if (label) {
-    const colorText = label.textContent.toLowerCase();
-    return colorText === 'white' ? 'white' : 'black';
-  }
-  
-  return 'black'; // default
-}
-
-// Set up add to cart button listener
-function setupAddToCartListener() {
-  const addToCartButton = document.querySelector('#ProductSubmitButton-template--24924471296325__main');
-  
-  if (addToCartButton) {
-    addToCartButton.addEventListener('click', function(e) {
-      e.preventDefault();
-
-      const selectedRadio = document.querySelector('input[name^="kaching-bundles-deal"]:checked');
-      if (selectedRadio) {
-        const bundleBar = selectedRadio.closest('.kaching-bundles__bar');
-        const bundleType = getBundleTypeFromBar(bundleBar);
-        if (bundleType) {
-          currentSelection.bundle = bundleType;
-          resetColorsForBundle(bundleBar, bundleType);
-        }
-      }
-
-      
-      const redirectUrl = getRedirectUrl();
-      
-      console.log('Add to cart clicked');
-      console.log('Current Selection:', currentSelection);
-      console.log('Redirect URL:', redirectUrl);
-      
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      } else {
-        console.error('No redirect URL found for current selection');
-        alert('Please select all required options before adding to cart.');
-      }
-    });
-  }
-}
-
-// Update bundle selection visual state
-function updateBundleSelection() {
-  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-  
-  bundleBars.forEach(bar => {
-    const bundleType = getBundleTypeFromBar(bar);
-    const isSelected = bundleType === currentSelection.bundle;
-    
-    if (isSelected) {
-      bar.classList.add('kaching-bundles__bar--selected');
-      const radio = bar.querySelector('input[type="radio"]');
-      if (radio) radio.checked = true;
-    } else {
-      bar.classList.remove('kaching-bundles__bar--selected');
-    }
-  });
-}
-
-// Enhanced redirect URL generation with better debugging
-function getRedirectUrl() {
-  const config = BUNDLE_CONFIG[currentSelection.bundle];
-  
-  if (!config) {
-    console.error('No config found for bundle:', currentSelection.bundle);
-    return null;
-  }
-  
-  let colorKey = '';
-  
-  switch (currentSelection.bundle) {
-    case 'single':
-      colorKey = currentSelection.colors[1] || 'black';
-      break;
-      
-    case 'duo':
-      const color1 = currentSelection.colors[1] || 'black';
-      const color2 = currentSelection.colors[2] || 'black';
-      colorKey = `${color1}-${color2}`;
-      break;
-      
-    case 'family':
-      const familyColor1 = currentSelection.colors[1] || 'black';
-      const familyColor2 = currentSelection.colors[2] || 'black';
-      const familyColor3 = currentSelection.colors[3] || 'black';
-      colorKey = `${familyColor1}-${familyColor2}-${familyColor3}`;
-      break;
-  }
-  
-  console.log('Generated color key:', colorKey);
-  console.log('Available URLs:', Object.keys(config.urls));
-  
-  const url = config.urls[colorKey];
-  
-  if (!url) {
-    console.error('No URL found for color key:', colorKey);
-    console.error('Current colors:', currentSelection.colors);
-  }
-  
-  return url || null;
-}
-
-// Get current selection summary for debugging
-function getSelectionSummary() {
-  const config = BUNDLE_CONFIG[currentSelection.bundle];
-  
-  return {
-    bundle: currentSelection.bundle,
-    colors: currentSelection.colors,
-    price: config ? config.price : null,
-    redirectUrl: getRedirectUrl()
-  };
-}
-
-// Add CSS for visual feedback and dropdown styling
-function addCustomStyles() {
-  const style = document.createElement('style');
-  style.textContent = `
-    .kaching-bundles__bar-main:hover {
-      cursor: pointer;
-    }
-    
-    .kaching-bundles__swatch-dropdown {
-      position: relative;
-    }
-    
-    .color-options {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      z-index: 1000;
-      min-width: 100px;
-    }
-    
-    .color-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    
-    .color-option:hover {
-      background-color: #f5f5f5;
-    }
-    
-    .color-option:first-child {
-      border-radius: 4px 4px 0 0;
-    }
-    
-    .color-option:last-child {
-      border-radius: 0 0 4px 4px;
-    }
-    
-    .color-option span {
-      font-size: 14px;
-      color: #333;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-// Initialize the system
-function initializeBundleSystem() {
-  console.log('Initializing Bundle System...');
-  
-  setupBundleSelectionListeners();
-  setupAddToCartListener();
-  updateBundlePrices();
-  
-  setTimeout(() => {
-    console.log('Forcing price updates...');
-    updateBundlePricesForced();
-    updateMainPrice();
-  }, 100);
-  
-  initializeColorDropdowns();
-  
-  setInterval(() => {
-    updateBundlePricesForced();
-  }, 2000);
-  
-  console.log('Bundle System initialized successfully!');
-  console.log('Initial selection:', currentSelection);
-}
-
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM loaded, initializing bundle system...');
-  initializeBundleSystem();
-  addCustomStyles();
-});
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded (fallback), initializing bundle system...');
-    initializeBundleSystem();
-    addCustomStyles();
-  });
-} else {
-  console.log('DOM already loaded, initializing bundle system immediately...');
-  initializeBundleSystem();
-  addCustomStyles();
-}
-
-// Export functions for external use
-window.BundleSystem = {
-  updateSelection: function(bundle, colors) {
-    currentSelection.bundle = bundle;
-    if (colors) {
-      currentSelection.colors = { ...currentSelection.colors, ...colors };
-    }
-    updateMainPrice();
-    updateBundleSelection();
-  },
-  
-  getCurrentSelection: function() {
-    return { ...currentSelection };
-  },
-  
-  getSelectionSummary: getSelectionSummary,
-  
-  getRedirectUrl: getRedirectUrl,
-  
-  setColor: function(itemNumber, color) {
-    if (currentSelection.colors.hasOwnProperty(itemNumber)) {
-      currentSelection.colors[itemNumber] = color;
-      
-      const variants = document.querySelectorAll('.kaching-bundles__bar-variant');
-      variants.forEach(variant => {
-        const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
-        if (numberElement && parseInt(numberElement.textContent) === itemNumber) {
-          const dropdown = variant.querySelector('.kaching-bundles__swatch-dropdown');
-          if (dropdown) {
-            updateColorDisplay(dropdown, color);
-          }
-        }
-      });
-    }
-  },
-  
-  updatePrices: function() {
-    updateBundlePricesForced();
-    updateMainPrice();
-  },
-  
-  // Debug helper
-  debugSelection: function() {
-    console.log('=== DEBUG SELECTION ===');
-    console.log('Current bundle:', currentSelection.bundle);
-    console.log('Current colors:', currentSelection.colors);
-    console.log('Generated URL:', getRedirectUrl());
-    console.log('=======================');
-  }
-};
-</script> -->
-
-
-<!-- <script>
-  // Bundle variants configuration with all possible color combinations
-const BUNDLE_CONFIG = {
-  'single': {
-    price: 29.99,
-    originalPrice: 69.99,
-    savings: 40.00,
-    urls: {
-      'black': 'https://n2kzpa-uw.myshopify.com/cart/52378434830669:1',
-      'white': 'https://n2kzpa-uw.myshopify.com/cart/52378434863437:1'
-    }
-  },
-  'duo': {
-    price: 38.99,
-    originalPrice: 139.98,
-    savings: 100.99,
-    urls: {
-      'black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436567373:1',
-      'black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436600141:1',
-      'white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436632909:1',
-      'white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436665677:1'
-    }
-  },
-  'family': {
-    price: 49.99,
-    originalPrice: 209.97,
-    savings: 159.98,
-    urls: {
-      'black-black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436698445:1',
-      'black-black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436731213:1',
-      'black-white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436763981:1',
-      'black-white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436796749:1',
-      'white-black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436829517:1',
-      'white-black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436862285:1',
-      'white-white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436895053:1',
-      'white-white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436927821:1'
-    }
-  }
-};
-
-// Store color selections for each bundle type separately
-let bundleSelections = {
-  single: { colors: { 1: 'black' } },
-  duo: { colors: { 1: 'black', 2: 'black' } },
-  family: { colors: { 1: 'black', 2: 'black', 3: 'black' } }
-};
-
-// Current active bundle
-let currentBundle = 'single';
-
-// Get currently selected bundle from radio buttons
-function getCurrentSelectedBundle() {
-  const checkedRadio = document.querySelector('input[name^="kaching-bundles-deal"]:checked');
-  if (!checkedRadio) return 'single';
-  
-  const bundleBar = checkedRadio.closest('.kaching-bundles__bar');
-  return getBundleTypeFromBar(bundleBar) || 'single';
-}
-
-// Get bundle type from bundle bar element
-function getBundleTypeFromBar(bundleBar) {
-  if (!bundleBar) return null;
-  
-  const titleElement = bundleBar.querySelector('.kaching-bundles__bar-title');
-  if (!titleElement) return null;
-  
-  const titleText = titleElement.textContent.toLowerCase();
-  if (titleText.includes('single')) return 'single';
-  if (titleText.includes('duo')) return 'duo';
-  if (titleText.includes('family')) return 'family';
-  return null;
-}
-
-// Update prices with forced refresh
-function updateBundlePricesForced() {
-  // Update Single bundle price
-  const singleElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"]');
-  singleElements.forEach(bar => {
-    const price = bar.querySelector('.kaching-bundles__bar-price');
-    const savings = bar.querySelector('.kaching-bundles__bar-label');
-    const original = bar.querySelector('.kaching-bundles__bar-full-price');
-    
-    if (price) price.innerHTML = `£${BUNDLE_CONFIG.single.price.toFixed(2)}`;
-    if (savings) savings.innerHTML = `Save £${BUNDLE_CONFIG.single.savings.toFixed(2)}`;
-    if (original) original.innerHTML = `£${BUNDLE_CONFIG.single.originalPrice.toFixed(2)}`;
-  });
-  
-  // Update Duo bundle price
-  const duoElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"]');
-  duoElements.forEach(bar => {
-    const price = bar.querySelector('.kaching-bundles__bar-price');
-    const savings = bar.querySelector('.kaching-bundles__bar-label');
-    const original = bar.querySelector('.kaching-bundles__bar-full-price');
-    
-    if (price) price.innerHTML = `£${BUNDLE_CONFIG.duo.price.toFixed(2)}`;
-    if (savings) savings.innerHTML = `Save £${BUNDLE_CONFIG.duo.savings.toFixed(2)}`;
-    if (original) original.innerHTML = `£${BUNDLE_CONFIG.duo.originalPrice.toFixed(2)}`;
-  });
-  
-  // Update Family bundle price
-  const familyElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"]');
-  familyElements.forEach(bar => {
-    const price = bar.querySelector('.kaching-bundles__bar-price');
-    const savings = bar.querySelector('.kaching-bundles__bar-label');
-    const original = bar.querySelector('.kaching-bundles__bar-full-price');
-    
-    if (price) price.innerHTML = `£${BUNDLE_CONFIG.family.price.toFixed(2)}`;
-    if (savings) savings.innerHTML = `Save £${BUNDLE_CONFIG.family.savings.toFixed(2)}`;
-    if (original) original.innerHTML = `£${BUNDLE_CONFIG.family.originalPrice.toFixed(2)}`;
-  });
-}
-
-// Update main price display
-function updateMainPrice() {
-  const config = BUNDLE_CONFIG[currentBundle];
-  if (!config) return;
-  
-  console.log('Updating main price for bundle:', currentBundle, 'Price:', config.price);
-  
-  // Update main price elements
-  const mainPriceElement = document.querySelector('#main-atc-price-template--24924471296325__main');
-  if (mainPriceElement) {
-    mainPriceElement.innerHTML = `£${config.price.toFixed(2)}`;
-  }
-  
-  const mainAtcPrice = document.querySelector('.main-atc-price');
-  if (mainAtcPrice) {
-    mainAtcPrice.innerHTML = `£${config.price.toFixed(2)}`;
-  }
-  
-  const priceRegular = document.querySelector('.price-item--regular.main-price');
-  const priceSale = document.querySelector('.price-item--sale.main-price');
-  const priceCompare = document.querySelector('.price-item--regular.main-comapre-price');
-  const savingsBadge = document.querySelector('.badge.price__badge-sale .nowrap');
-  
-  if (priceRegular) priceRegular.innerHTML = `£${config.price.toFixed(2)} GBP`;
-  if (priceSale) priceSale.innerHTML = `£${config.price.toFixed(2)} GBP`;
-  if (priceCompare) priceCompare.innerHTML = `£${config.originalPrice.toFixed(2)} GBP`;
-  if (savingsBadge) savingsBadge.innerHTML = `Save <br/>£${config.savings.toFixed(2)}`;
-  
-  updateBundlePricesForced();
-}
-
-// Store color selection for specific bundle and item
-function setColorForBundle(bundleType, itemNumber, color) {
-  if (!bundleSelections[bundleType]) {
-    bundleSelections[bundleType] = { colors: {} };
-  }
-  
-  bundleSelections[bundleType].colors[itemNumber] = color;
-  console.log(`Set color for ${bundleType} item ${itemNumber}: ${color}`);
-  console.log('Current selections:', bundleSelections);
-}
-
-// Get color selection for specific bundle and item
-function getColorForBundle(bundleType, itemNumber) {
-  if (!bundleSelections[bundleType] || !bundleSelections[bundleType].colors) {
-    return 'black'; // default
-  }
-  return bundleSelections[bundleType].colors[itemNumber] || 'black';
-}
-
-// Initialize color dropdowns and handle color selection
-function setupColorDropdowns() {
-  console.log('Setting up color dropdowns...');
-  
-  const colorDropdowns = document.querySelectorAll('.kaching-bundles__swatch-dropdown');
-  console.log('Found dropdowns:', colorDropdowns.length);
-  
-  colorDropdowns.forEach((dropdown, index) => {
-    console.log(`Processing dropdown ${index + 1}`);
-    
-    // Remove existing color options if any
-    const existingOptions = dropdown.querySelector('.color-options');
-    if (existingOptions) {
-      existingOptions.remove();
-    }
-    
-    // Create new color options
-    const optionsContainer = document.createElement('div');
-    optionsContainer.className = 'color-options';
-    optionsContainer.style.cssText = 'position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); z-index: 1000; min-width: 100px; display: none;';
-    
-    // Create color options
-    const blackOption = createColorOption('black');
-    const whiteOption = createColorOption('white');
-    
-    optionsContainer.appendChild(blackOption);
-    optionsContainer.appendChild(whiteOption);
-    dropdown.appendChild(optionsContainer);
-    
-    // Handle dropdown toggle
-    const selector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
-    if (selector) {
-      // Remove existing listeners
-      const newSelector = selector.cloneNode(true);
-      selector.parentNode.replaceChild(newSelector, selector);
-      
-      newSelector.addEventListener('click', function(e) {
-        e.stopPropagation();
-        e.preventDefault();
-        
-        // Close other dropdowns
-        document.querySelectorAll('.color-options').forEach(opt => {
-          if (opt !== optionsContainer) {
-            opt.style.display = 'none';
-          }
-        });
-        
-        // Toggle this dropdown
-        optionsContainer.style.display = optionsContainer.style.display === 'block' ? 'none' : 'block';
-      });
-    }
-  });
-  
-  // Close dropdowns when clicking outside
-  document.addEventListener('click', function() {
-    document.querySelectorAll('.color-options').forEach(opt => {
-      opt.style.display = 'none';
-    });
-  });
-}
-
-// Create color option element
-function createColorOption(color) {
-  const option = document.createElement('div');
-  option.className = 'color-option';
-  option.dataset.color = color;
-  option.style.cssText = 'display: flex; align-items: center; gap: 8px; padding: 8px 12px; cursor: pointer; transition: background-color 0.2s;';
-  
-  const swatch = document.createElement('div');
-  swatch.className = 'kaching-bundles__swatch';
-  const colorValue = color === 'black' ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
-  const borderColor = color === 'white' ? 'rgba(0, 0, 0, 1)' : colorValue;
-  swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${borderColor}; width: 16px; height: 16px; border-radius: 50%; background-color: ${colorValue}; border: 1px solid ${borderColor};`;
-  
-  const label = document.createElement('span');
-  label.textContent = color.charAt(0).toUpperCase() + color.slice(1);
-  label.style.cssText = 'font-size: 14px; color: #333;';
-  
-  option.appendChild(swatch);
-  option.appendChild(label);
-  
-  // Add hover effect
-  option.addEventListener('mouseenter', function() {
-    this.style.backgroundColor = '#f5f5f5';
-  });
-  
-  option.addEventListener('mouseleave', function() {
-    this.style.backgroundColor = 'transparent';
-  });
-  
-  // Handle color selection
-  option.addEventListener('click', function(e) {
-    e.stopPropagation();
-    handleColorSelection(this);
-  });
-  
-  return option;
-}
-
-// Handle color selection
-function handleColorSelection(optionElement) {
-  const color = optionElement.dataset.color;
-  const dropdown = optionElement.closest('.kaching-bundles__swatch-dropdown');
-  const variant = dropdown.closest('.kaching-bundles__bar-variant');
-  const bundleBar = variant.closest('.kaching-bundles__bar');
-  
-  // Get bundle type and item number
-  const bundleType = getBundleTypeFromBar(bundleBar);
-  const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
-  
-  if (!bundleType || !numberElement) return;
-  
-  const itemNumber = parseInt(numberElement.textContent);
-  
-  console.log(`Color selected: ${color} for ${bundleType} item ${itemNumber}`);
-  
-  // Store the color selection for this specific bundle
-  setColorForBundle(bundleType, itemNumber, color);
-  
-  // Update the visual display
-  updateColorDisplay(dropdown, color);
-  
-  // Close the dropdown
-  const optionsContainer = dropdown.querySelector('.color-options');
-  if (optionsContainer) {
-    optionsContainer.style.display = 'none';
-  }
-  
-  console.log('Updated color selections:', bundleSelections);
-}
-
-// Update color display in dropdown
-function updateColorDisplay(dropdown, selectedColor) {
-  const selector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
-  const swatch = selector.querySelector('.kaching-bundles__swatch');
-  const label = selector.querySelector('span:last-child');
-  
-  const colorValue = selectedColor === 'black' ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
-  const borderColor = selectedColor === 'white' ? 'rgba(0, 0, 0, 1)' : colorValue;
-  
-  if (swatch) {
-    swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${borderColor}; width: 16px; height: 16px; border-radius: 50%; background-color: ${colorValue}; border: 1px solid ${borderColor};`;
-  }
-  
-  if (label) {
-    label.textContent = selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1);
-  }
-}
-
-// Setup bundle selection listeners
-function setupBundleSelectionListeners() {
-  console.log('Setting up bundle selection listeners...');
-  
-  const bundleRadios = document.querySelectorAll('input[name^="kaching-bundles-deal"]');
-  console.log('Found bundle radios:', bundleRadios.length);
-  
-  bundleRadios.forEach((radio, index) => {
-    console.log(`Setting up radio ${index + 1}`);
-    
-    radio.addEventListener('change', function() {
-      if (this.checked) {
-        const bundleBar = this.closest('.kaching-bundles__bar');
-        const bundleType = getBundleTypeFromBar(bundleBar);
-        
-        if (bundleType && bundleType !== currentBundle) {
-          console.log('Bundle changed from', currentBundle, 'to', bundleType);
-          currentBundle = bundleType;
-          updateMainPrice();
-        }
-      }
-    });
-  });
-  
-  // Also handle clicks on bundle bars
-  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-  bundleBars.forEach(bar => {
-    bar.addEventListener('click', function() {
-      const radio = this.querySelector('input[type="radio"]');
-      if (radio && !radio.checked) {
-        radio.checked = true;
-        radio.dispatchEvent(new Event('change'));
-      }
-    });
-  });
-}
-
-// Generate redirect URL based on current selections
-function getRedirectUrl() {
-  const config = BUNDLE_CONFIG[currentBundle];
-  if (!config) {
-    console.error('No config found for bundle:', currentBundle);
-    return null;
-  }
-  
-  const colors = bundleSelections[currentBundle].colors;
-  let colorKey = '';
-  
-  switch (currentBundle) {
-    case 'single':
-      colorKey = colors[1] || 'black';
-      break;
-      
-    case 'duo':
-      colorKey = `${colors[1] || 'black'}-${colors[2] || 'black'}`;
-      break;
-      
-    case 'family':
-      colorKey = `${colors[1] || 'black'}-${colors[2] || 'black'}-${colors[3] || 'black'}`;
-      break;
-  }
-  
-  console.log('Generated color key:', colorKey);
-  console.log('Available URLs for', currentBundle, ':', Object.keys(config.urls));
-  
-  const url = config.urls[colorKey];
-  if (!url) {
-    console.error('No URL found for color key:', colorKey);
-    console.error('Bundle selections:', bundleSelections);
-  }
-  
-  return url;
-}
-
-// Setup add to cart button
-function setupAddToCartListener() {
-  const addToCartButton = document.querySelector('#ProductSubmitButton-template--24924471296325__main');
-  
-  if (addToCartButton) {
-    console.log('Setting up add to cart listener');
-    
-    addToCartButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      
-      // Make sure we have the current bundle selection
-      currentBundle = getCurrentSelectedBundle();
-      
-      const redirectUrl = getRedirectUrl();
-      
-      console.log('=== ADD TO CART CLICKED ===');
-      console.log('Current bundle:', currentBundle);
-      console.log('Bundle selections:', bundleSelections);
-      console.log('Redirect URL:', redirectUrl);
-      console.log('==========================');
-      
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      } else {
-        alert('Error: Could not generate checkout URL. Please try again.');
-      }
-    });
-  } else {
-    console.error('Add to cart button not found');
-  }
-}
-
-// Add custom styles
-function addCustomStyles() {
-  const style = document.createElement('style');
-  style.textContent = `
-    .kaching-bundles__bar-main:hover {
-      cursor: pointer;
-    }
-    
-    .kaching-bundles__swatch-dropdown {
-      position: relative;
-    }
-    
-    .color-option:hover {
-      background-color: #f5f5f5 !important;
-    }
-  `;
-  document.head.appendChild(style);
-}
 
-// Initialize everything
-function initializeBundleSystem() {
-  console.log('=== INITIALIZING BUNDLE SYSTEM ===');
-  
-  // Set initial bundle based on what's currently selected
-  currentBundle = getCurrentSelectedBundle();
-  console.log('Initial bundle:', currentBundle);
-  
-  // Setup all listeners
-  setupBundleSelectionListeners();
-  setupColorDropdowns();
-  setupAddToCartListener();
   
-  // Update prices
-  setTimeout(() => {
-    updateBundlePricesForced();
-    updateMainPrice();
-  }, 100);
-  
-  // Periodic price updates
-  setInterval(() => {
-    updateBundlePricesForced();
-  }, 2000);
-  
-  console.log('Bundle system initialized!');
-  console.log('Initial selections:', bundleSelections);
-}
-
-// DOM ready handler
-function onDOMReady() {
-  console.log('DOM is ready, initializing...');
-  addCustomStyles();
-  initializeBundleSystem();
-}
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', onDOMReady);
-} else {
-  onDOMReady();
-}
-
-// Export for debugging
-window.BundleSystemDebug = {
-  getCurrentBundle: () => currentBundle,
-  getBundleSelections: () => bundleSelections,
-  getRedirectUrl: generateFreshRedirectUrl, // Use the fresh URL generator
-  setCurrentBundle: (bundle) => {
-    currentBundle = bundle;
-    updateMainPrice();
-  },
-  debugInfo: () => {
-    console.log('=== BUNDLE SYSTEM DEBUG ===');
-    console.log('Current bundle:', currentBundle);
-    console.log('Bundle selections:', bundleSelections);
-    console.log('Fresh redirect URL:', generateFreshRedirectUrl());
-    console.log('==========================');
-  },
-  // Helper to test color reading
-  readCurrentColors: () => {
-    const selectedBundle = getCurrentSelectedBundle();
-    const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
-    let activeBundleBar = null;
-    
-    for (const bar of bundleBars) {
-      const radio = bar.querySelector('input[type="radio"]');
-      if (radio && radio.checked) {
-        activeBundleBar = bar;
-        break;
-      }
-    }
-    
-    if (!activeBundleBar) return null;
-    
-    const variants = activeBundleBar.querySelectorAll('.kaching-bundles__bar-variant');
-    const colors = {};
-    
-    variants.forEach(variant => {
-      const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
-      const dropdown = variant.querySelector('.kaching-bundles__swatch-dropdown');
-      
-      if (numberElement && dropdown) {
-        const itemNumber = parseInt(numberElement.textContent);
-        const currentColor = getCurrentColorFromDropdown(dropdown);
-        colors[itemNumber] = currentColor;
-      }
-    });
-    
-    console.log('Current colors in UIs:', colors);
-    return colors;
-  }
-};
-</script> -->
 
+//correct redirect
 <script>
 // ======================== CONFIG ==========================
 const BUNDLE_CONFIG = {
@@ -9227,6 +6813,7 @@ function updateBundlePricesForced() {
 // Get bundle type from bundle bar
 function getBundleTypeFromBar(bundleBar) {
   const titleEl = bundleBar.querySelector(".kaching-bundles__bar-title");
+  console.log("title:", titleEl)
   if (!titleEl) return null;
   const text = titleEl.textContent.toLowerCase();
   if (text.includes("single")) return "single";
@@ -9314,6 +6901,7 @@ function updateMainPrice1() {
 // Update bundle selection highlight
 function updateBundleSelection() {
   document.querySelectorAll(".kaching-bundles__bar").forEach((bar) => {
+    console.log("boxes:", document.querySelectorAll(".kaching-bundles__bar") )
     const type = getBundleTypeFromBar(bar);
     if (type === currentSelection.bundle) {
       bar.classList.add("kaching-bundles__bar--selected");
@@ -9364,10 +6952,12 @@ function setupBundleListeners() {
 
   document.querySelectorAll(".kaching-bundles__bar").forEach((bar) => {
     bar.addEventListener("click", function () {
-      const radio = this.querySelector('input[type="radio"]');
-      if (radio && !radio.checked) {
-        radio.checked = true;
-        radio.dispatchEvent(new Event("change"));
+       if (e.target.tagName.toLowerCase() === "input") return;
+
+    const radio = this.querySelector('input[type="radio"]');
+    if (radio) {
+      radio.checked = true;
+      radio.dispatchEvent(new Event("change", { bubbles: true }));
       }
     });
   });
@@ -9407,6 +6997,235 @@ function initializeBundleSystem() {
 document.addEventListener("DOMContentLoaded", () => {
   waitForElement(".kaching-bundles__bar", initializeBundleSystem);
 });
+</script>
+
+
+
+//slider fix
+<script>
+  // Fixed Product Gallery Slider - Thumbnail to Main Image Switching
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all thumbnail buttons
+    const thumbnailButtons = document.querySelectorAll('.thumbnail-list__item .thumbnail');
+    // Get all main gallery slides
+    const mainSlides = document.querySelectorAll('.product__media-item.slider__slide');
+    // Get the main slider container
+    const mainSliderList = document.querySelector('#Slider-Gallery-template--24924471296325__main');
+
+    if (!thumbnailButtons.length || !mainSlides.length) {
+        console.warn('Gallery elements not found');
+        return;
+    }
+
+    // Function to switch to a specific slide
+    function switchToSlide(slideIndex) {
+        // Remove active class from all slides
+        mainSlides.forEach(slide => {
+            slide.classList.remove('is-active');
+        });
+
+        // Add active class to target slide
+        if (mainSlides[slideIndex]) {
+            mainSlides[slideIndex].classList.add('is-active');
+        }
+
+        // Update thumbnail active states
+        thumbnailButtons.forEach((btn, index) => {
+            if (index === slideIndex) {
+                btn.setAttribute('aria-current', 'true');
+                btn.style.opacity = '1';
+                btn.style.border = '2px solid #000';
+            } else {
+                btn.setAttribute('aria-current', 'false');
+                btn.style.opacity = '0.7';
+                btn.style.border = 'none';
+            }
+        });
+
+        // If the slider uses transform positioning, calculate and apply transform
+        if (mainSliderList) {
+            const slideWidth = mainSlides[0] ? mainSlides[0].offsetWidth : 0;
+            const translateX = -slideIndex * slideWidth;
+            mainSliderList.style.transform = `translateX(${translateX}px)`;
+        }
+    }
+
+    // Add click event listeners to thumbnail buttons
+    thumbnailButtons.forEach((button, index) => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Switch to the corresponding slide by index
+            switchToSlide(index);
+            
+            // Update gallery status for screen readers
+            const galleryStatus = document.querySelector('#GalleryStatus-template--24924471296325__main');
+            if (galleryStatus) {
+                galleryStatus.textContent = `Image ${index + 1} of ${thumbnailButtons.length} selected`;
+            }
+        });
+    });
+
+    // Handle dot navigation (mobile)
+    const dotButtons = document.querySelectorAll('.slider-counter__link--dots');
+    dotButtons.forEach((dot, index) => {
+        dot.addEventListener('click', function(e) {
+            e.preventDefault();
+            switchToSlide(index);
+        });
+    });
+
+    // Handle arrow navigation
+    const prevButton = document.querySelector('.slider-button--prev');
+    const nextButton = document.querySelector('.slider-button--next');
+    
+    let currentIndex = 0;
+    
+    if (prevButton) {
+        prevButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            currentIndex = currentIndex > 0 ? currentIndex - 1 : thumbnailButtons.length - 1;
+            switchToSlide(currentIndex);
+        });
+    }
+    
+    if (nextButton) {
+        nextButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            currentIndex = currentIndex < thumbnailButtons.length - 1 ? currentIndex + 1 : 0;
+            switchToSlide(currentIndex);
+        });
+    }
+
+    // Keyboard navigation
+    thumbnailButtons.forEach((button, index) => {
+        button.addEventListener('keydown', function(e) {
+            let newIndex;
+            
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    newIndex = index > 0 ? index - 1 : thumbnailButtons.length - 1;
+                    switchToSlide(newIndex);
+                    thumbnailButtons[newIndex].focus();
+                    currentIndex = newIndex;
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    newIndex = index < thumbnailButtons.length - 1 ? index + 1 : 0;
+                    switchToSlide(newIndex);
+                    thumbnailButtons[newIndex].focus();
+                    currentIndex = newIndex;
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    switchToSlide(0);
+                    thumbnailButtons[0].focus();
+                    currentIndex = 0;
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    const lastIndex = thumbnailButtons.length - 1;
+                    switchToSlide(lastIndex);
+                    thumbnailButtons[lastIndex].focus();
+                    currentIndex = lastIndex;
+                    break;
+            }
+        });
+    });
+
+    // Initialize - set first slide as active
+    switchToSlide(0);
+
+    // Alternative approach if the above doesn't work - direct image switching
+    function alternativeSwitchMethod(slideIndex) {
+        const targetSlide = mainSlides[slideIndex];
+        if (!targetSlide) return;
+
+        // Hide all slides
+        mainSlides.forEach(slide => {
+            slide.style.display = 'none';
+            slide.classList.remove('is-active');
+        });
+
+        // Show target slide
+        targetSlide.style.display = 'block';
+        targetSlide.classList.add('is-active');
+
+        // Update thumbnails
+        thumbnailButtons.forEach((btn, index) => {
+            if (index === slideIndex) {
+                btn.setAttribute('aria-current', 'true');
+                btn.style.opacity = '1';
+                btn.style.outline = '2px solid #000';
+            } else {
+                btn.setAttribute('aria-current', 'false');
+                btn.style.opacity = '0.7';
+                btn.style.outline = 'none';
+            }
+        });
+    }
+
+    // Fallback: If the transform method doesn't work after 1 second, use alternative method
+    setTimeout(() => {
+        // Check if the slider is working by looking at transforms or active states
+        const hasActiveSlide = document.querySelector('.product__media-item.is-active');
+        if (!hasActiveSlide) {
+            console.log('Using alternative switching method');
+            
+            // Reattach event listeners with alternative method
+            thumbnailButtons.forEach((button, index) => {
+                button.removeEventListener('click', arguments.callee);
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alternativeSwitchMethod(index);
+                    currentIndex = index;
+                });
+            });
+            
+            // Initialize with alternative method
+            alternativeSwitchMethod(0);
+        }
+    }, 1000);
+});
+
+// CSS styles to ensure proper functionality
+const styles = `
+.product__media-item:not(.is-active) {
+    display: none !important;
+}
+
+.product__media-item.is-active {
+    display: block !important;
+}
+
+.thumbnail[aria-current="true"] {
+    opacity: 1 !important;
+    box-shadow: 0 0 0 2px #000 !important;
+}
+
+.thumbnail[aria-current="false"] {
+    opacity: 0.7 !important;
+}
+
+.slider-counter__link--dots.active .dot {
+    background-color: #000 !important;
+}
+
+/* Ensure slider container doesn't interfere */
+#Slider-Gallery-template--24924471296325__main {
+    transform: none !important;
+}
+`;
+
+// Inject styles
+if (!document.querySelector('#gallery-fix-styles')) {
+    const styleSheet = document.createElement('style');
+    styleSheet.id = 'gallery-fix-styles';
+    styleSheet.textContent = styles;
+    document.head.appendChild(styleSheet);
+}
 </script>
 
 </html>
