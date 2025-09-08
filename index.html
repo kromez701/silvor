@@ -8067,6 +8067,7 @@ function updateMainPrice() {
 // Update bundle prices in the selection boxes
 function updateBundlePrices() {
   const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
+  console.log("bundle:", bundleBars)
   
   bundleBars.forEach(bar => {
     const titleElement = bar.querySelector('.kaching-bundles__bar-title');
@@ -8241,6 +8242,7 @@ function updateColorDisplay(dropdown, selectedColor) {
 // Enhanced bundle selection with proper color state management
 function setupBundleSelectionListeners() {
   const bundleRadios = document.querySelectorAll('input[name^="kaching-bundles-deal"]');
+  console.log("radios", bundleRadios)
   
   bundleRadios.forEach(radio => {
     radio.addEventListener('change', function() {
@@ -8569,7 +8571,7 @@ window.BundleSystem = {
 </script> -->
 
 
-<script>
+<!-- <script>
   // Bundle variants configuration with all possible color combinations
 const BUNDLE_CONFIG = {
   'single': {
@@ -9097,5 +9099,203 @@ window.BundleSystemDebug = {
     return colors;
   }
 };
+</script> -->
+
+<script>
+// ======================== CONFIG ==========================
+const BUNDLE_CONFIG = {
+  single: {
+    price: 29.99,
+    originalPrice: 69.99,
+    savings: 40.0,
+    urls: {
+      black: "https://n2kzpa-uw.myshopify.com/cart/52378434830669:1",
+      white: "https://n2kzpa-uw.myshopify.com/cart/52378434863437:1",
+    },
+  },
+  duo: {
+    price: 38.99,
+    originalPrice: 139.98,
+    savings: 100.99,
+    urls: {
+      "black-black": "https://n2kzpa-uw.myshopify.com/cart/52378436567373:1",
+      "black-white": "https://n2kzpa-uw.myshopify.com/cart/52378436600141:1",
+      "white-black": "https://n2kzpa-uw.myshopify.com/cart/52378436632909:1",
+      "white-white": "https://n2kzpa-uw.myshopify.com/cart/52378436665677:1",
+    },
+  },
+  family: {
+    price: 49.99,
+    originalPrice: 209.97,
+    savings: 159.98,
+    urls: {
+      "black-black-black": "https://n2kzpa-uw.myshopify.com/cart/52378436698445:1",
+      "black-black-white": "https://n2kzpa-uw.myshopify.com/cart/52378436731213:1",
+      "black-white-black": "https://n2kzpa-uw.myshopify.com/cart/52378436763981:1",
+      "black-white-white": "https://n2kzpa-uw.myshopify.com/cart/52378436796749:1",
+      "white-black-black": "https://n2kzpa-uw.myshopify.com/cart/52378436829517:1",
+      "white-black-white": "https://n2kzpa-uw.myshopify.com/cart/52378436862285:1",
+      "white-white-black": "https://n2kzpa-uw.myshopify.com/cart/52378436895053:1",
+      "white-white-white": "https://n2kzpa-uw.myshopify.com/cart/52378436927821:1",
+    },
+  },
+};
+
+// ======================== STATE ==========================
+let currentSelection = {
+  bundle: "single",
+  colors: { 1: "black", 2: "black", 3: "black" },
+};
+
+// ======================== HELPERS ==========================
+
+// Utility: wait until an element exists
+function waitForElement(selector, callback) {
+  const check = setInterval(() => {
+    const el = document.querySelector(selector);
+    if (el) {
+      clearInterval(check);
+      callback(el);
+    }
+  }, 200);
+}
+
+// Get bundle type from bundle bar
+function getBundleTypeFromBar(bundleBar) {
+  const titleEl = bundleBar.querySelector(".kaching-bundles__bar-title");
+  if (!titleEl) return null;
+  const text = titleEl.textContent.toLowerCase();
+  if (text.includes("single")) return "single";
+  if (text.includes("duo")) return "duo";
+  if (text.includes("family")) return "family";
+  return null;
+}
+
+// Build redirect URL based on current selection
+function getRedirectUrl() {
+  const config = BUNDLE_CONFIG[currentSelection.bundle];
+  if (!config) return null;
+
+  let colorKey = "";
+  if (currentSelection.bundle === "single") {
+    colorKey = currentSelection.colors[1] || "black";
+  } else if (currentSelection.bundle === "duo") {
+    colorKey = `${currentSelection.colors[1] || "black"}-${currentSelection.colors[2] || "black"}`;
+  } else if (currentSelection.bundle === "family") {
+    colorKey = `${currentSelection.colors[1] || "black"}-${currentSelection.colors[2] || "black"}-${currentSelection.colors[3] || "black"}`;
+  }
+
+  return config.urls[colorKey] || null;
+}
+
+// Update main displayed price
+function updateMainPrice() {
+  const config = BUNDLE_CONFIG[currentSelection.bundle];
+  if (!config) return;
+
+  const mainPrice = document.querySelector(".main-atc-price");
+  if (mainPrice) mainPrice.innerHTML = `£${config.price.toFixed(2)}`;
+
+  const comparePrice = document.querySelector(".price-item--regular.main-comapre-price");
+  if (comparePrice) comparePrice.innerHTML = `£${config.originalPrice.toFixed(2)} GBP`;
+
+  const badge = document.querySelector(".badge.price__badge-sale .nowrap");
+  if (badge) badge.innerHTML = `Save <br/>£${config.savings.toFixed(2)}`;
+}
+
+// Update bundle selection highlight
+function updateBundleSelection() {
+  document.querySelectorAll(".kaching-bundles__bar").forEach((bar) => {
+    const type = getBundleTypeFromBar(bar);
+    if (type === currentSelection.bundle) {
+      bar.classList.add("kaching-bundles__bar--selected");
+      const radio = bar.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    } else {
+      bar.classList.remove("kaching-bundles__bar--selected");
+    }
+  });
+}
+
+// Reset colors from UI
+function resetColorsForBundle(bundleBar) {
+  const variants = bundleBar.querySelectorAll(".kaching-bundles__bar-variant");
+  variants.forEach((variant) => {
+    const numberEl = variant.querySelector(".kaching-bundles__bar-variant-number span:last-child");
+    const label = variant.querySelector(".kaching-bundles__bar-variant-select span:last-child");
+    if (numberEl && label) {
+      currentSelection.colors[parseInt(numberEl.textContent)] = label.textContent.toLowerCase();
+    }
+  });
+}
+
+// ======================== INIT LISTENERS ==========================
+function setupBundleListeners() {
+  const radios = document.querySelectorAll('input[name^="kaching-bundles-deal"]');
+  if (!radios.length) {
+    console.warn("⚠️ No bundle radios found yet, retrying...");
+    setTimeout(setupBundleListeners, 500);
+    return;
+  }
+
+  radios.forEach((radio) => {
+    radio.addEventListener("change", function () {
+      if (this.checked) {
+        const bar = this.closest(".kaching-bundles__bar");
+        const type = getBundleTypeFromBar(bar);
+        if (type) {
+          currentSelection.bundle = type;
+          resetColorsForBundle(bar);
+          updateMainPrice();
+          updateBundleSelection();
+        }
+      }
+    });
+  });
+
+  document.querySelectorAll(".kaching-bundles__bar").forEach((bar) => {
+    bar.addEventListener("click", function () {
+      const radio = this.querySelector('input[type="radio"]');
+      if (radio && !radio.checked) {
+        radio.checked = true;
+        radio.dispatchEvent(new Event("change"));
+      }
+    });
+  });
+}
+
+function setupAddToCartListener() {
+  waitForElement("#ProductSubmitButton-template--24924471296325__main", (btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const selected = document.querySelector('input[name^="kaching-bundles-deal"]:checked');
+      if (selected) {
+        const bar = selected.closest(".kaching-bundles__bar");
+        resetColorsForBundle(bar);
+      }
+      const url = getRedirectUrl();
+      if (url) {
+        window.location.href = url;
+      } else {
+        alert("Please select all options before adding to cart.");
+      }
+    });
+  });
+}
+
+// ======================== INITIALIZE ==========================
+function initializeBundleSystem() {
+  console.log("✅ Initializing bundle system...");
+  setupBundleListeners();
+  setupAddToCartListener();
+  updateMainPrice();
+  updateBundleSelection();
+}
+
+// Fire when DOM + Shopify finished rendering
+document.addEventListener("DOMContentLoaded", () => {
+  waitForElement(".kaching-bundles__bar", initializeBundleSystem);
+});
 </script>
+
 </html>
