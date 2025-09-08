@@ -9051,7 +9051,7 @@ if (document.readyState === 'loading') {
 window.BundleSystemDebug = {
   getCurrentBundle: () => currentBundle,
   getBundleSelections: () => bundleSelections,
-  getRedirectUrl: getRedirectUrl,
+  getRedirectUrl: generateFreshRedirectUrl, // Use the fresh URL generator
   setCurrentBundle: (bundle) => {
     currentBundle = bundle;
     updateMainPrice();
@@ -9060,8 +9060,41 @@ window.BundleSystemDebug = {
     console.log('=== BUNDLE SYSTEM DEBUG ===');
     console.log('Current bundle:', currentBundle);
     console.log('Bundle selections:', bundleSelections);
-    console.log('Generated URL:', getRedirectUrl());
+    console.log('Fresh redirect URL:', generateFreshRedirectUrl());
     console.log('==========================');
+  },
+  // Helper to test color reading
+  readCurrentColors: () => {
+    const selectedBundle = getCurrentSelectedBundle();
+    const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
+    let activeBundleBar = null;
+    
+    for (const bar of bundleBars) {
+      const radio = bar.querySelector('input[type="radio"]');
+      if (radio && radio.checked) {
+        activeBundleBar = bar;
+        break;
+      }
+    }
+    
+    if (!activeBundleBar) return null;
+    
+    const variants = activeBundleBar.querySelectorAll('.kaching-bundles__bar-variant');
+    const colors = {};
+    
+    variants.forEach(variant => {
+      const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
+      const dropdown = variant.querySelector('.kaching-bundles__swatch-dropdown');
+      
+      if (numberElement && dropdown) {
+        const itemNumber = parseInt(numberElement.textContent);
+        const currentColor = getCurrentColorFromDropdown(dropdown);
+        colors[itemNumber] = currentColor;
+      }
+    });
+    
+    console.log('Current colors in UI:', colors);
+    return colors;
   }
 };
 </script>
