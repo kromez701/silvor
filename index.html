@@ -7300,7 +7300,7 @@ window.BundleSystem = {
 </script> -->
 
 
-<script>
+<!-- <script>
   // Bundle variants configuration with all possible color combinations
 const BUNDLE_CONFIG = {
   'single': {
@@ -7920,6 +7920,639 @@ window.BundleSystem = {
   updatePrices: function() {
     updateBundlePricesForced();
     updateMainPrice();
+  }
+};
+</script> -->
+
+<script>
+  // Bundle variants configuration with all possible color combinations
+const BUNDLE_CONFIG = {
+  'single': {
+    price: 29.99,
+    originalPrice: 69.99,
+    savings: 40.00,
+    urls: {
+      'black': 'https://n2kzpa-uw.myshopify.com/cart/52378434830669:1',
+      'white': 'https://n2kzpa-uw.myshopify.com/cart/52378434863437:1'
+    }
+  },
+  'duo': {
+    price: 38.99,
+    originalPrice: 139.98,
+    savings: 100.99,
+    urls: {
+      'black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436567373:1',
+      'black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436600141:1',
+      'white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436632909:1',
+      'white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436665677:1'
+    }
+  },
+  'family': {
+    price: 49.99,
+    originalPrice: 209.97,
+    savings: 159.98,
+    urls: {
+      'black-black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436698445:1',
+      'black-black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436731213:1',
+      'black-white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436763981:1',
+      'black-white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436796749:1',
+      'white-black-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436829517:1',
+      'white-black-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436862285:1',
+      'white-white-black': 'https://n2kzpa-uw.myshopify.com/cart/52378436895053:1',
+      'white-white-white': 'https://n2kzpa-uw.myshopify.com/cart/52378436927821:1'
+    }
+  }
+};
+
+// Current selection state
+let currentSelection = {
+  bundle: 'single',
+  colors: {
+    1: 'black',
+    2: 'black', 
+    3: 'black'
+  }
+};
+
+// Force update bundle prices
+function updateBundlePricesForced() {
+  const singlePriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-price');
+  singlePriceElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.single.price.toFixed(2)}`;
+  });
+  
+  const duoPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-price');
+  duoPriceElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.duo.price.toFixed(2)}`;
+  });
+  
+  const familyPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-price');
+  familyPriceElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.family.price.toFixed(2)}`;
+  });
+  
+  // Update savings labels
+  const singleSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-label');
+  singleSavingsElements.forEach(el => {
+    el.innerHTML = `Save £${BUNDLE_CONFIG.single.savings.toFixed(2)}`;
+  });
+  
+  const duoSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-label');
+  duoSavingsElements.forEach(el => {
+    el.innerHTML = `Save £${BUNDLE_CONFIG.duo.savings.toFixed(2)}`;
+  });
+  
+  const familySavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-label');
+  familySavingsElements.forEach(el => {
+    el.innerHTML = `Save £${BUNDLE_CONFIG.family.savings.toFixed(2)}`;
+  });
+  
+  // Update original prices
+  const singleOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-full-price');
+  singleOriginalElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.single.originalPrice.toFixed(2)}`;
+  });
+  
+  const duoOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-full-price');
+  duoOriginalElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.duo.originalPrice.toFixed(2)}`;
+  });
+  
+  const familyOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-full-price');
+  familyOriginalElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.family.originalPrice.toFixed(2)}`;
+  });
+}
+
+// Update main price display
+function updateMainPrice() {
+  const config = BUNDLE_CONFIG[currentSelection.bundle];
+  
+  if (config) {
+    const mainPriceElement = document.querySelector('#main-atc-price-template--24924471296325__main');
+    if (mainPriceElement) {
+      mainPriceElement.innerHTML = `£${config.price.toFixed(2)}`;
+    }
+    
+    const mainAtcPrice = document.querySelector('.main-atc-price');
+    if (mainAtcPrice) {
+      mainAtcPrice.innerHTML = `£${config.price.toFixed(2)}`;
+    }
+    
+    const priceRegular = document.querySelector('.price-item--regular.main-price');
+    const priceSale = document.querySelector('.price-item--sale.main-price');
+    const priceCompare = document.querySelector('.price-item--regular.main-comapre-price');
+    const savingsBadge = document.querySelector('.badge.price__badge-sale .nowrap');
+    
+    if (priceRegular) {
+      priceRegular.innerHTML = `£${config.price.toFixed(2)} GBP`;
+    }
+    
+    if (priceSale) {
+      priceSale.innerHTML = `£${config.price.toFixed(2)} GBP`;
+    }
+    
+    if (priceCompare) {
+      priceCompare.innerHTML = `£${config.originalPrice.toFixed(2)} GBP`;
+    }
+    
+    if (savingsBadge) {
+      savingsBadge.innerHTML = `Save <br/>£${config.savings.toFixed(2)}`;
+    }
+    
+    updateBundlePricesForced();
+  }
+}
+
+// Update bundle prices in the selection boxes
+function updateBundlePrices() {
+  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
+  
+  bundleBars.forEach(bar => {
+    const titleElement = bar.querySelector('.kaching-bundles__bar-title');
+    const priceElement = bar.querySelector('.kaching-bundles__bar-price');
+    const fullPriceElement = bar.querySelector('.kaching-bundles__bar-full-price');
+    const savingsElement = bar.querySelector('.kaching-bundles__bar-label');
+    
+    if (titleElement) {
+      const titleText = titleElement.textContent.toLowerCase();
+      let bundleType = '';
+      
+      if (titleText.includes('single')) {
+        bundleType = 'single';
+      } else if (titleText.includes('duo')) {
+        bundleType = 'duo';
+      } else if (titleText.includes('family')) {
+        bundleType = 'family';
+      }
+      
+      if (bundleType && BUNDLE_CONFIG[bundleType]) {
+        const config = BUNDLE_CONFIG[bundleType];
+        
+        if (priceElement) {
+          priceElement.innerHTML = `£${config.price.toFixed(2)}`;
+        }
+        
+        if (fullPriceElement) {
+          fullPriceElement.innerHTML = `£${config.originalPrice.toFixed(2)}`;
+        }
+        
+        if (savingsElement) {
+          savingsElement.innerHTML = `Save £${config.savings.toFixed(2)}`;
+        }
+      }
+    }
+  });
+}
+
+// Get bundle type from bundle bar element
+function getBundleTypeFromBar(bundleBar) {
+  const titleElement = bundleBar.querySelector('.kaching-bundles__bar-title');
+  if (!titleElement) return null;
+  
+  const titleText = titleElement.textContent.toLowerCase();
+  if (titleText.includes('single')) return 'single';
+  if (titleText.includes('duo')) return 'duo';
+  if (titleText.includes('family')) return 'family';
+  return null;
+}
+
+// Enhanced color selection handling
+function handleColorChange(dropdown, selectedColor) {
+  const variant = dropdown.closest('.kaching-bundles__bar-variant');
+  const bundleBar = variant.closest('.kaching-bundles__bar');
+  const bundleType = getBundleTypeFromBar(bundleBar);
+  
+  // Get item number from the variant
+  const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
+  if (!numberElement) return;
+  
+  const itemNumber = parseInt(numberElement.textContent);
+  
+  // Only update color selection if this matches the currently selected bundle
+  const currentBundleRadio = bundleBar.querySelector('input[type="radio"]');
+  if (currentBundleRadio && currentBundleRadio.checked) {
+    currentSelection.colors[itemNumber] = selectedColor;
+    console.log(`Color updated for ${bundleType} item ${itemNumber}: ${selectedColor}`);
+    console.log('Current selection:', currentSelection);
+  }
+  
+  // Update visual display
+  updateColorDisplay(dropdown, selectedColor);
+}
+
+// Initialize color dropdowns with black and white options
+function initializeColorDropdowns() {
+  const colorDropdowns = document.querySelectorAll('.kaching-bundles__swatch-dropdown');
+  
+  colorDropdowns.forEach(dropdown => {
+    if (!dropdown.querySelector('.color-options')) {
+      createColorDropdownOptions(dropdown);
+    }
+  });
+}
+
+// Create color dropdown options
+function createColorDropdownOptions(dropdown) {
+  const currentSelector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
+  
+  const optionsContainer = document.createElement('div');
+  optionsContainer.className = 'color-options';
+  optionsContainer.style.display = 'none';
+  
+  const blackOption = createColorOption('black', 'rgba(0, 0, 0, 1)');
+  const whiteOption = createColorOption('white', 'rgba(255, 255, 255, 1)');
+  
+  optionsContainer.appendChild(blackOption);
+  optionsContainer.appendChild(whiteOption);
+  dropdown.appendChild(optionsContainer);
+  
+  currentSelector.addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleColorDropdown(dropdown);
+  });
+  
+  document.addEventListener('click', function() {
+    closeAllColorDropdowns();
+  });
+}
+
+// Create individual color option
+function createColorOption(color, colorValue) {
+  const option = document.createElement('div');
+  option.className = 'color-option';
+  option.dataset.color = color;
+  
+  const swatch = document.createElement('div');
+  swatch.className = 'kaching-bundles__swatch';
+  swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${colorValue};`;
+  
+  const label = document.createElement('span');
+  label.textContent = color.charAt(0).toUpperCase() + color.slice(1);
+  
+  option.appendChild(swatch);
+  option.appendChild(label);
+  
+  option.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const dropdown = this.closest('.kaching-bundles__swatch-dropdown');
+    handleColorChange(dropdown, color);
+    closeAllColorDropdowns();
+  });
+  
+  return option;
+}
+
+// Toggle color dropdown visibility
+function toggleColorDropdown(dropdown) {
+  closeAllColorDropdowns();
+  const options = dropdown.querySelector('.color-options');
+  if (options) {
+    options.style.display = options.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+// Close all color dropdowns
+function closeAllColorDropdowns() {
+  const allOptions = document.querySelectorAll('.color-options');
+  allOptions.forEach(options => {
+    options.style.display = 'none';
+  });
+}
+
+// Update color display in dropdown
+function updateColorDisplay(dropdown, selectedColor) {
+  const selector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
+  const swatch = selector.querySelector('.kaching-bundles__swatch');
+  const label = selector.querySelector('span:last-child');
+  
+  const colorValue = selectedColor === 'black' ? 'rgba(0, 0, 0, 1)' : 'rgba(255, 255, 255, 1)';
+  const borderColor = selectedColor === 'white' ? 'rgba(0, 0, 0, 1)' : colorValue;
+  
+  if (swatch) {
+    swatch.style.cssText = `--kaching-swatch-size: 16px; --kaching-swatch-border-radius: 50%; --kaching-swatch-color: ${colorValue}; --kaching-swatch-border-color: ${borderColor};`;
+  }
+  
+  if (label) {
+    label.textContent = selectedColor.charAt(0).toUpperCase() + selectedColor.slice(1);
+  }
+}
+
+// Enhanced bundle selection with proper color state management
+function setupBundleSelectionListeners() {
+  const bundleRadios = document.querySelectorAll('input[name^="kaching-bundles-deal"]');
+  
+  bundleRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.checked) {
+        const bundleBar = this.closest('.kaching-bundles__bar');
+        const bundleType = getBundleTypeFromBar(bundleBar);
+        
+        if (bundleType) {
+          console.log('Bundle changed to:', bundleType);
+          currentSelection.bundle = bundleType;
+          
+          // Reset color selections to current visual state for this bundle
+          resetColorsForBundle(bundleBar, bundleType);
+          
+          updateMainPrice();
+          updateBundleSelection();
+          
+          setTimeout(() => {
+            updateMainPrice();
+          }, 50);
+        }
+      }
+    });
+  });
+  
+  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
+  bundleBars.forEach(bar => {
+    bar.addEventListener('click', function() {
+      const radio = this.querySelector('input[type="radio"]');
+      if (radio && !radio.checked) {
+        radio.checked = true;
+        radio.dispatchEvent(new Event('change'));
+      }
+    });
+  });
+}
+
+// Reset color selections based on current visual state
+function resetColorsForBundle(bundleBar, bundleType) {
+  const variants = bundleBar.querySelectorAll('.kaching-bundles__bar-variant');
+  
+  variants.forEach(variant => {
+    const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
+    const dropdown = variant.querySelector('.kaching-bundles__swatch-dropdown');
+    
+    if (numberElement && dropdown) {
+      const itemNumber = parseInt(numberElement.textContent);
+      const currentColor = getCurrentColorFromDropdown(dropdown);
+      
+      if (currentColor) {
+        currentSelection.colors[itemNumber] = currentColor;
+      }
+    }
+  });
+  
+  console.log('Colors reset for bundle:', bundleType, currentSelection.colors);
+}
+
+// Get current color from dropdown display
+function getCurrentColorFromDropdown(dropdown) {
+  const selector = dropdown.querySelector('.kaching-bundles__bar-variant-select');
+  const label = selector.querySelector('span:last-child');
+  
+  if (label) {
+    const colorText = label.textContent.toLowerCase();
+    return colorText === 'white' ? 'white' : 'black';
+  }
+  
+  return 'black'; // default
+}
+
+// Set up add to cart button listener
+function setupAddToCartListener() {
+  const addToCartButton = document.querySelector('#ProductSubmitButton-template--24924471296325__main');
+  
+  if (addToCartButton) {
+    addToCartButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      const redirectUrl = getRedirectUrl();
+      
+      console.log('Add to cart clicked');
+      console.log('Current Selection:', currentSelection);
+      console.log('Redirect URL:', redirectUrl);
+      
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        console.error('No redirect URL found for current selection');
+        alert('Please select all required options before adding to cart.');
+      }
+    });
+  }
+}
+
+// Update bundle selection visual state
+function updateBundleSelection() {
+  const bundleBars = document.querySelectorAll('.kaching-bundles__bar');
+  
+  bundleBars.forEach(bar => {
+    const bundleType = getBundleTypeFromBar(bar);
+    const isSelected = bundleType === currentSelection.bundle;
+    
+    if (isSelected) {
+      bar.classList.add('kaching-bundles__bar--selected');
+      const radio = bar.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+    } else {
+      bar.classList.remove('kaching-bundles__bar--selected');
+    }
+  });
+}
+
+// Enhanced redirect URL generation with better debugging
+function getRedirectUrl() {
+  const config = BUNDLE_CONFIG[currentSelection.bundle];
+  
+  if (!config) {
+    console.error('No config found for bundle:', currentSelection.bundle);
+    return null;
+  }
+  
+  let colorKey = '';
+  
+  switch (currentSelection.bundle) {
+    case 'single':
+      colorKey = currentSelection.colors[1] || 'black';
+      break;
+      
+    case 'duo':
+      const color1 = currentSelection.colors[1] || 'black';
+      const color2 = currentSelection.colors[2] || 'black';
+      colorKey = `${color1}-${color2}`;
+      break;
+      
+    case 'family':
+      const familyColor1 = currentSelection.colors[1] || 'black';
+      const familyColor2 = currentSelection.colors[2] || 'black';
+      const familyColor3 = currentSelection.colors[3] || 'black';
+      colorKey = `${familyColor1}-${familyColor2}-${familyColor3}`;
+      break;
+  }
+  
+  console.log('Generated color key:', colorKey);
+  console.log('Available URLs:', Object.keys(config.urls));
+  
+  const url = config.urls[colorKey];
+  
+  if (!url) {
+    console.error('No URL found for color key:', colorKey);
+    console.error('Current colors:', currentSelection.colors);
+  }
+  
+  return url || null;
+}
+
+// Get current selection summary for debugging
+function getSelectionSummary() {
+  const config = BUNDLE_CONFIG[currentSelection.bundle];
+  
+  return {
+    bundle: currentSelection.bundle,
+    colors: currentSelection.colors,
+    price: config ? config.price : null,
+    redirectUrl: getRedirectUrl()
+  };
+}
+
+// Add CSS for visual feedback and dropdown styling
+function addCustomStyles() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .kaching-bundles__bar-main:hover {
+      cursor: pointer;
+    }
+    
+    .kaching-bundles__swatch-dropdown {
+      position: relative;
+    }
+    
+    .color-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 1000;
+      min-width: 100px;
+    }
+    
+    .color-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    .color-option:hover {
+      background-color: #f5f5f5;
+    }
+    
+    .color-option:first-child {
+      border-radius: 4px 4px 0 0;
+    }
+    
+    .color-option:last-child {
+      border-radius: 0 0 4px 4px;
+    }
+    
+    .color-option span {
+      font-size: 14px;
+      color: #333;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Initialize the system
+function initializeBundleSystem() {
+  console.log('Initializing Bundle System...');
+  
+  setupBundleSelectionListeners();
+  setupAddToCartListener();
+  updateBundlePrices();
+  
+  setTimeout(() => {
+    console.log('Forcing price updates...');
+    updateBundlePricesForced();
+    updateMainPrice();
+  }, 100);
+  
+  initializeColorDropdowns();
+  
+  setInterval(() => {
+    updateBundlePricesForced();
+  }, 2000);
+  
+  console.log('Bundle System initialized successfully!');
+  console.log('Initial selection:', currentSelection);
+}
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM loaded, initializing bundle system...');
+  initializeBundleSystem();
+  addCustomStyles();
+});
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded (fallback), initializing bundle system...');
+    initializeBundleSystem();
+    addCustomStyles();
+  });
+} else {
+  console.log('DOM already loaded, initializing bundle system immediately...');
+  initializeBundleSystem();
+  addCustomStyles();
+}
+
+// Export functions for external use
+window.BundleSystem = {
+  updateSelection: function(bundle, colors) {
+    currentSelection.bundle = bundle;
+    if (colors) {
+      currentSelection.colors = { ...currentSelection.colors, ...colors };
+    }
+    updateMainPrice();
+    updateBundleSelection();
+  },
+  
+  getCurrentSelection: function() {
+    return { ...currentSelection };
+  },
+  
+  getSelectionSummary: getSelectionSummary,
+  
+  getRedirectUrl: getRedirectUrl,
+  
+  setColor: function(itemNumber, color) {
+    if (currentSelection.colors.hasOwnProperty(itemNumber)) {
+      currentSelection.colors[itemNumber] = color;
+      
+      const variants = document.querySelectorAll('.kaching-bundles__bar-variant');
+      variants.forEach(variant => {
+        const numberElement = variant.querySelector('.kaching-bundles__bar-variant-number span:last-child');
+        if (numberElement && parseInt(numberElement.textContent) === itemNumber) {
+          const dropdown = variant.querySelector('.kaching-bundles__swatch-dropdown');
+          if (dropdown) {
+            updateColorDisplay(dropdown, color);
+          }
+        }
+      });
+    }
+  },
+  
+  updatePrices: function() {
+    updateBundlePricesForced();
+    updateMainPrice();
+  },
+  
+  // Debug helper
+  debugSelection: function() {
+    console.log('=== DEBUG SELECTION ===');
+    console.log('Current bundle:', currentSelection.bundle);
+    console.log('Current colors:', currentSelection.colors);
+    console.log('Generated URL:', getRedirectUrl());
+    console.log('=======================');
   }
 };
 </script>
