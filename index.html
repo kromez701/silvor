@@ -2860,9 +2860,9 @@ src="https://www.facebook.com/tr?id=1497972024708962&ev=PageView&noscript=1"
               <span class="main-atc__error" style="display:none;"></span>
               <span class="main-atc__label button__label">
                 
-                  <!-- <span id="main-atc-price-template--24924471296325__main" class='main-atc-price'>
-                    $39.99 •
-                  </span> -->
+                  <span id="main-atc-price-template--24924471296325__main" class='main-atc-price'>
+                    £29.99 •
+                  </span>
                 
                 <span class="main-atc__label__text">Add to cart
 </span>
@@ -5508,7 +5508,7 @@ src="https://www.facebook.com/tr?id=1497972024708962&ev=PageView&noscript=1"
   .kaching-bundles__bar-full-price{
     visibility: hidden;
   }
-  .price-item.price-item--sale.price-item--last.main-price, .price-item--regular.main-comapre-price, .slider-button.slider-button--prev, .slider-button.slider-button--next{
+  .price-item.price-item--sale.price-item--last.main-price, .price-item--regular.main-comapre-price, .slider-button.slider-button--prev, .slider-button.slider-button--next, #main-atc-price-template--24924471296325__main{
     visibility: hidden;
   }
   
@@ -6853,6 +6853,27 @@ function updateMainPrice() {
   const badge = document.querySelector(".badge.price__badge-sale .nowrap");
   if (badge) badge.innerHTML = `Save <br/>£${config.savings.toFixed(2)}`;
 }
+function forceMainPrice() {
+  const config = BUNDLE_CONFIG[currentSelection.bundle];
+  if (!config) return;
+
+  const mainPriceElement = document.querySelector('#main-atc-price-template--24924471296325__main');
+  if (mainPriceElement) {
+    mainPriceElement.textContent = `£${config.price.toFixed(2)}`;
+  }
+}
+
+function keepForcingPrice() {
+  let counter = 0;
+  const interval = setInterval(() => {
+    forceMainPrice();
+    counter++;
+    if (counter > 10) clearInterval(interval); // run ~2 seconds then stop
+  }, 200);
+}
+
+
+
 
 
 function updateMainPrice1() {
@@ -6862,6 +6883,7 @@ function updateMainPrice1() {
     const mainPriceElement = document.querySelector('#main-atc-price-template--24924471296325__main');
     if (mainPriceElement) {
       mainPriceElement.innerHTML = `£${config.price.toFixed(2)}`;
+      console.log(mainPriceElement.textContent)
       mainPriceElement.style.visibility = "visible"
     }
     
@@ -6991,6 +7013,9 @@ function initializeBundleSystem() {
   updateBundleSelection();
   updateBundlePricesForced()
   updateMainPrice1()
+  keepForcingPrice()
+
+  setTimeout(updateMainPrice1, 800);
 }
 
 // Fire when DOM + Shopify finished rendering
