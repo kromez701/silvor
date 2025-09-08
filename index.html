@@ -5502,6 +5502,15 @@ src="https://www.facebook.com/tr?id=1497972024708962&ev=PageView&noscript=1"
     max-width: 80.4rem;
     margin: auto;
   }
+  .kaching-bundles__bar-price{
+    visibility: hidden;
+  }
+  .kaching-bundles__bar-full-price{
+    visibility: hidden;
+  }
+  .price-item.price-item--sale.price-item--last.main-price, .price-item--regular.main-comapre-price{
+    visibility: hidden;
+  }
   
   .specialist-quote-container {
     margin: 0 auto;
@@ -9160,6 +9169,61 @@ function waitForElement(selector, callback) {
   }, 200);
 }
 
+function updateBundlePricesForced() {
+  const singlePriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-price');
+  singlePriceElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.single.price.toFixed(2)}`;
+    el.style.visibility = "visible"
+  });
+  
+  const duoPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-price');
+  duoPriceElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.duo.price.toFixed(2)}`;
+    el.style.visibility = "visible"
+  });
+  
+  const familyPriceElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-price');
+  familyPriceElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.family.price.toFixed(2)}`;
+    el.style.visibility = "visible"
+  });
+  
+  // Update savings labels
+  const singleSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-label');
+  singleSavingsElements.forEach(el => {
+    el.innerHTML = `Save £${BUNDLE_CONFIG.single.savings.toFixed(2)}`;
+  });
+  
+  const duoSavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-label');
+  duoSavingsElements.forEach(el => {
+    el.innerHTML = `Save £${BUNDLE_CONFIG.duo.savings.toFixed(2)}`;
+  });
+  
+  const familySavingsElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-label');
+  familySavingsElements.forEach(el => {
+    el.innerHTML = `Save £${BUNDLE_CONFIG.family.savings.toFixed(2)}`;
+  });
+  
+  // Update original prices
+  const singleOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="503b5ab2-95fd-4145-9df4-0a73c9523b2e"] .kaching-bundles__bar-full-price');
+  singleOriginalElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.single.originalPrice.toFixed(2)}`;
+    el.style.visibility = "visible"
+  });
+  
+  const duoOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="fc517f17-1e56-4ccb-b45d-8e424a76258b"] .kaching-bundles__bar-full-price');
+  duoOriginalElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.duo.originalPrice.toFixed(2)}`;
+    el.style.visibility = "visible"
+  });
+  
+  const familyOriginalElements = document.querySelectorAll('.kaching-bundles__bar[data-deal-bar-id="5d5421c3-6b21-49f2-b591-4a4e7c3040f0"] .kaching-bundles__bar-full-price');
+  familyOriginalElements.forEach(el => {
+    el.innerHTML = `£${BUNDLE_CONFIG.family.originalPrice.toFixed(2)}`;
+    el.style.visibility = "visible"
+  });
+}
+
 // Get bundle type from bundle bar
 function getBundleTypeFromBar(bundleBar) {
   const titleEl = bundleBar.querySelector(".kaching-bundles__bar-title");
@@ -9201,6 +9265,50 @@ function updateMainPrice() {
 
   const badge = document.querySelector(".badge.price__badge-sale .nowrap");
   if (badge) badge.innerHTML = `Save <br/>£${config.savings.toFixed(2)}`;
+}
+
+
+function updateMainPrice1() {
+  const config = BUNDLE_CONFIG[currentSelection.bundle];
+  
+  if (config) {
+    const mainPriceElement = document.querySelector('#main-atc-price-template--24924471296325__main');
+    if (mainPriceElement) {
+      mainPriceElement.innerHTML = `£${config.price.toFixed(2)}`;
+      mainPriceElement.style.visibility = "visible"
+    }
+    
+    const mainAtcPrice = document.querySelector('.main-atc-price');
+    if (mainAtcPrice) {
+      mainAtcPrice.innerHTML = `£${config.price.toFixed(2)}`;
+    }
+    
+    const priceRegular = document.querySelector('.price-item--regular.main-price');
+    const priceSale = document.querySelector('.price-item--sale.main-price');
+    const priceCompare = document.querySelector('.price-item--regular.main-comapre-price');
+    const savingsBadge = document.querySelector('.badge.price__badge-sale .nowrap');
+    
+    if (priceRegular) {
+      priceRegular.innerHTML = `£${config.price.toFixed(2)} GBP`;
+      priceRegular.style.visibility = "visible"
+    }
+    
+    if (priceSale) {
+      priceSale.innerHTML = `£${config.price.toFixed(2)} GBP`;
+      priceSale.style.visibility = "visible"
+    }
+    
+    if (priceCompare) {
+      priceCompare.innerHTML = `£${config.originalPrice.toFixed(2)} GBP`;
+      priceCompare.style.visibility = "visible"
+    }
+    
+    if (savingsBadge) {
+      savingsBadge.innerHTML = `Save <br/>£${config.savings.toFixed(2)}`;
+    }
+    
+    updateBundlePricesForced();
+  }
 }
 
 // Update bundle selection highlight
@@ -9247,6 +9355,7 @@ function setupBundleListeners() {
           currentSelection.bundle = type;
           resetColorsForBundle(bar);
           updateMainPrice();
+          updateMainPrice1()
           updateBundleSelection();
         }
       }
@@ -9290,6 +9399,8 @@ function initializeBundleSystem() {
   setupAddToCartListener();
   updateMainPrice();
   updateBundleSelection();
+  updateBundlePricesForced()
+  updateMainPrice1()
 }
 
 // Fire when DOM + Shopify finished rendering
